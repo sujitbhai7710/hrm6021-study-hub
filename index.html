@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HRM 6021 - Study Hub</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-card: #1a2035;
+  --bg-card-hover: #1e2642;
+  --accent-1: #6366f1;
+  --accent-2: #8b5cf6;
+  --accent-3: #ec4899;
+  --accent-4: #f59e0b;
+  --accent-5: #10b981;
+  --accent-6: #3b82f6;
+  --accent-7: #ef4444;
+  --accent-8: #06b6d4;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #2d3a52;
+  --gradient-1: linear-gradient(135deg, #6366f1, #8b5cf6);
+  --gradient-2: linear-gradient(135deg, #ec4899, #f59e0b);
+  --gradient-3: linear-gradient(135deg, #10b981, #06b6d4);
+  --gradient-4: linear-gradient(135deg, #3b82f6, #6366f1);
+  --gradient-5: linear-gradient(135deg, #f59e0b, #ef4444);
+  --gradient-6: linear-gradient(135deg, #8b5cf6, #ec4899);
+  --gradient-7: linear-gradient(135deg, #06b6d4, #10b981);
+  --shadow-lg: 0 10px 40px rgba(0,0,0,0.4);
+  --shadow-glow: 0 0 30px rgba(99,102,241,0.15);
+  --topic1: #6366f1;
+  --topic2: #8b5cf6;
+  --topic3: #ec4899;
+  --topic4: #f59e0b;
+  --topic5: #10b981;
+  --topic6: #3b82f6;
+  --topic7: #06b6d4;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  background: rgba(10,14,26,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 70px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800; font-size: 1.4rem;
+  background: var(--gradient-1);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+.nav-brand span { font-weight: 400; opacity: 0.7; }
+.nav-links { display: flex; gap: 0.5rem; }
+.nav-btn {
+  padding: 0.55rem 1.3rem; border-radius: 10px;
+  border: 1px solid transparent; background: transparent;
+  color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;
+  cursor: pointer; transition: all 0.3s; font-family: 'Inter';
+}
+.nav-btn:hover { background: var(--bg-card); color: var(--text-primary); }
+.nav-btn.active {
+  background: var(--gradient-1); color: #fff;
+  border-color: transparent; box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+}
+
+/* ===== HERO ===== */
+.hero {
+  margin-top: 70px; padding: 3rem 2rem 2rem;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(99,102,241,0.08) 0%, transparent 100%);
+}
+.hero h1 {
+  font-family: 'Poppins'; font-size: 2.8rem; font-weight: 800;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+.hero p { color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+.hero-stats {
+  display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap;
+}
+.stat-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 1rem 1.8rem; text-align: center;
+}
+.stat-card .num { font-family:'Poppins'; font-size:1.8rem; font-weight:700; }
+.stat-card .label { color: var(--text-muted); font-size:0.8rem; margin-top:0.2rem; }
+
+/* ===== SECTIONS ===== */
+.section { display: none; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+.section.active { display: block; }
+
+/* ===== NOTES ===== */
+.topic-group { margin-bottom: 2rem; }
+.topic-header {
+  display: flex; align-items: center; gap: 0.8rem;
+  padding: 1rem 1.5rem; border-radius: 14px;
+  cursor: pointer; transition: all 0.3s; margin-bottom: 0.5rem;
+  border: 1px solid var(--border);
+}
+.topic-header:hover { transform: translateX(5px); }
+.topic-header .icon {
+  width: 42px; height: 42px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
+}
+.topic-header h2 { font-family:'Poppins'; font-size:1.15rem; font-weight:600; flex:1; }
+.topic-header .arrow { transition: transform 0.3s; font-size:1.2rem; color: var(--text-muted); }
+.topic-header.open .arrow { transform: rotate(90deg); }
+
+.topic-content { display:none; padding: 0.5rem 0 0 0; }
+.topic-content.show { display: block; }
+
+.class-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.3rem 1.5rem; margin-bottom: 0.8rem;
+  transition: all 0.3s; position: relative; overflow: hidden;
+}
+.class-card::before {
+  content:''; position:absolute; top:0; left:0; width:4px; height:100%;
+}
+.class-card:hover { border-color: rgba(99,102,241,0.3); box-shadow: var(--shadow-glow); }
+.class-card h3 { font-family:'Poppins'; font-size:1rem; font-weight:600; margin-bottom:0.7rem; display:flex; align-items:center; gap:0.5rem; }
+.class-card h3 .badge {
+  font-size:0.65rem; padding:0.15rem 0.5rem; border-radius:6px;
+  color:#fff; font-weight:600; letter-spacing:0.5px;
+}
+.note-point {
+  padding: 0.4rem 0; padding-left: 1.2rem; position: relative;
+  color: var(--text-secondary); font-size:0.92rem; line-height:1.6;
+}
+.note-point::before {
+  content:''; position:absolute; left:0; top:0.65rem;
+  width:8px; height:8px; border-radius:50%;
+}
+.highlight-box {
+  background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2);
+  border-radius: 10px; padding: 1rem 1.2rem; margin-top: 0.8rem;
+}
+.highlight-box .hl-title {
+  font-weight:700; font-size:0.85rem; color: var(--accent-1); margin-bottom:0.4rem;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.highlight-box p { color: var(--text-primary); font-size:0.92rem; line-height:1.6; }
+
+.faq-section { margin-top: 0.8rem; }
+.faq-item {
+  background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.15);
+  border-radius: 10px; padding: 0.7rem 1rem; margin-bottom: 0.4rem;
+}
+.faq-q { color: var(--accent-4); font-weight:600; font-size:0.88rem; }
+.faq-a { color: var(--text-secondary); font-size:0.85rem; margin-top:0.2rem; padding-left:1rem; }
+
+/* ===== MCQ SECTION ===== */
+.mcq-controls {
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;
+  margin-bottom:1.5rem; padding:1rem 1.5rem;
+  background: var(--bg-card); border:1px solid var(--border); border-radius:14px;
+}
+.toggle-wrap { display:flex; align-items:center; gap:0.7rem; }
+.toggle-wrap label { color: var(--text-secondary); font-size:0.9rem; font-weight:500; }
+.toggle {
+  position:relative; width:52px; height:28px; background: var(--border);
+  border-radius:14px; cursor:pointer; transition: background 0.3s;
+}
+.toggle.on { background: var(--accent-5); }
+.toggle .knob {
+  position:absolute; top:3px; left:3px; width:22px; height:22px;
+  background:#fff; border-radius:50%; transition: transform 0.3s;
+}
+.toggle.on .knob { transform: translateX(24px); }
+
+.mcq-topic-tabs { display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.5rem; }
+.mcq-tab {
+  padding:0.5rem 1rem; border-radius:10px; border:1px solid var(--border);
+  background: var(--bg-card); color: var(--text-secondary);
+  font-size:0.82rem; font-weight:500; cursor:pointer; transition: all 0.3s;
+}
+.mcq-tab:hover { border-color: var(--accent-1); color: var(--text-primary); }
+.mcq-tab.active { background: var(--gradient-1); color:#fff; border-color:transparent; }
+
+.mcq-card {
+  background: var(--bg-card); border:1px solid var(--border); border-radius:14px;
+  padding:1.5rem; margin-bottom:1rem; transition: all 0.3s;
+}
+.mcq-card:hover { border-color: rgba(99,102,241,0.3); }
+.mcq-q-text { font-weight:600; font-size:1rem; margin-bottom:1rem; line-height:1.5; }
+.mcq-q-num {
+  display:inline-block; padding:0.15rem 0.6rem; border-radius:6px;
+  font-size:0.75rem; font-weight:700; color:#fff; margin-right:0.5rem;
+}
+.mcq-options { display:flex; flex-direction:column; gap:0.5rem; }
+.mcq-opt {
+  padding:0.7rem 1rem; border-radius:10px; border:1px solid var(--border);
+  background: rgba(255,255,255,0.02); cursor:pointer; transition: all 0.3s;
+  display:flex; align-items:center; gap:0.7rem; font-size:0.92rem;
+}
+.mcq-opt:hover { border-color: var(--accent-1); background: rgba(99,102,241,0.05); }
+.mcq-opt .opt-letter {
+  width:28px; height:28px; border-radius:8px; display:flex; align-items:center;
+  justify-content:center; font-weight:700; font-size:0.8rem; flex-shrink:0;
+  background: var(--border); color: var(--text-secondary);
+}
+.mcq-opt.correct { border-color: var(--accent-5); background: rgba(16,185,129,0.1); }
+.mcq-opt.correct .opt-letter { background: var(--accent-5); color:#fff; }
+.mcq-opt.wrong { border-color: var(--accent-7); background: rgba(239,68,68,0.1); }
+.mcq-opt.wrong .opt-letter { background: var(--accent-7); color:#fff; }
+
+.reveal-btn {
+  margin-top:0.8rem; padding:0.5rem 1.2rem; border-radius:8px;
+  background: var(--gradient-1); color:#fff; border:none;
+  font-size:0.82rem; font-weight:600; cursor:pointer; transition: all 0.3s;
+  font-family:'Inter';
+}
+.reveal-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(99,102,241,0.3); }
+
+.answer-reveal {
+  margin-top:0.8rem; padding:0.8rem 1rem; border-radius:10px;
+  background: rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2);
+  display:none; font-size:0.9rem;
+}
+.answer-reveal.show { display:block; }
+.answer-reveal .correct-label { color: var(--accent-5); font-weight:700; }
+
+/* ===== TEST SECTION ===== */
+.test-setup {
+  background: var(--bg-card); border:1px solid var(--border);
+  border-radius:18px; padding:2rem; max-width:700px; margin:0 auto;
+}
+.test-setup h2 { font-family:'Poppins'; font-size:1.5rem; font-weight:700; margin-bottom:1.5rem; text-align:center; }
+.test-field { margin-bottom:1.2rem; }
+.test-field label { display:block; color: var(--text-secondary); font-size:0.85rem; font-weight:600; margin-bottom:0.4rem; text-transform:uppercase; letter-spacing:0.5px; }
+.test-field input[type="number"] {
+  width:100%; padding:0.7rem 1rem; border-radius:10px;
+  border:1px solid var(--border); background: var(--bg-secondary);
+  color: var(--text-primary); font-size:1rem; font-family:'Inter';
+}
+.test-field input:focus { outline:none; border-color: var(--accent-1); }
+.topic-checkboxes { display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; }
+.topic-check {
+  display:flex; align-items:center; gap:0.5rem; padding:0.5rem 0.8rem;
+  border-radius:10px; border:1px solid var(--border); background: var(--bg-secondary);
+  cursor:pointer; transition: all 0.3s; font-size:0.85rem;
+}
+.topic-check:hover { border-color: var(--accent-1); }
+.topic-check.selected { border-color: var(--accent-5); background: rgba(16,185,129,0.1); }
+.topic-check input { display:none; }
+.topic-check .check-icon { width:20px; height:20px; border-radius:6px; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; transition: all 0.3s; flex-shrink:0; }
+.topic-check.selected .check-icon { background: var(--accent-5); border-color: var(--accent-5); }
+.topic-check.selected .check-icon::after { content:'✓'; color:#fff; font-size:0.7rem; font-weight:700; }
+
+.start-test-btn {
+  width:100%; padding:0.9rem; border-radius:12px; border:none;
+  background: var(--gradient-1); color:#fff; font-size:1rem; font-weight:700;
+  cursor:pointer; transition: all 0.3s; font-family:'Poppins'; margin-top:0.5rem;
+}
+.start-test-btn:hover { transform:translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
+.start-test-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+
+/* Test In Progress */
+.test-area { display:none; max-width:800px; margin:0 auto; }
+.test-header {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:1rem 1.5rem; background: var(--bg-card); border:1px solid var(--border);
+  border-radius:14px; margin-bottom:1.5rem;
+}
+.test-timer { font-family:'Poppins'; font-size:1.5rem; font-weight:700; color: var(--accent-4); }
+.test-progress { color: var(--text-secondary); font-size:0.9rem; }
+.test-progress-bar { height:4px; background: var(--border); border-radius:2px; margin-top:0.5rem; }
+.test-progress-fill { height:100%; border-radius:2px; background: var(--gradient-1); transition: width 0.3s; }
+
+.test-question-card {
+  background: var(--bg-card); border:1px solid var(--border); border-radius:16px;
+  padding:2rem; margin-bottom:1rem;
+}
+.test-q-num { font-size:0.8rem; color: var(--accent-1); font-weight:700; margin-bottom:0.5rem; }
+.test-q-text { font-size:1.1rem; font-weight:600; line-height:1.5; margin-bottom:1.2rem; }
+.test-options { display:flex; flex-direction:column; gap:0.6rem; }
+.test-opt {
+  padding:0.8rem 1.2rem; border-radius:12px; border:1px solid var(--border);
+  background: rgba(255,255,255,0.02); cursor:pointer; transition: all 0.3s;
+  display:flex; align-items:center; gap:0.8rem; font-size:0.95rem;
+}
+.test-opt:hover:not(.disabled) { border-color: var(--accent-1); background: rgba(99,102,241,0.05); }
+.test-opt.selected { border-color: var(--accent-6); background: rgba(59,130,246,0.1); }
+.test-opt.selected .opt-letter { background: var(--accent-6); color:#fff; }
+.test-opt.correct-answer { border-color: var(--accent-5); background: rgba(16,185,129,0.12); }
+.test-opt.correct-answer .opt-letter { background: var(--accent-5); color:#fff; }
+.test-opt.wrong-answer { border-color: var(--accent-7); background: rgba(239,68,68,0.12); }
+.test-opt.wrong-answer .opt-letter { background: var(--accent-7); color:#fff; }
+.test-opt.disabled { cursor:default; }
+
+.test-feedback {
+  margin-top:1rem; padding:0.8rem 1rem; border-radius:10px; font-size:0.9rem; font-weight:600;
+  display:none;
+}
+.test-feedback.correct-fb { display:block; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); color: var(--accent-5); }
+.test-feedback.wrong-fb { display:block; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); color: var(--accent-7); }
+.test-feedback.skip-fb { display:block; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); color: var(--accent-4); }
+
+.test-nav { display:flex; justify-content:space-between; gap:0.5rem; margin-top:1rem; }
+.test-nav-btn {
+  padding:0.7rem 1.5rem; border-radius:10px; border:1px solid var(--border);
+  background: var(--bg-card); color: var(--text-primary); font-size:0.9rem;
+  font-weight:600; cursor:pointer; transition: all 0.3s; font-family:'Inter';
+}
+.test-nav-btn:hover { border-color: var(--accent-1); }
+.test-nav-btn.primary { background: var(--gradient-1); border-color:transparent; }
+.test-nav-btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+/* Results */
+.test-results { display:none; max-width:800px; margin:0 auto; }
+.result-header {
+  text-align:center; padding:2rem; background: var(--bg-card);
+  border:1px solid var(--border); border-radius:18px; margin-bottom:1.5rem;
+}
+.result-score { font-family:'Poppins'; font-size:3.5rem; font-weight:800; }
+.result-score.great { background: var(--gradient-3); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.result-score.good { background: var(--gradient-1); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.result-score.poor { background: var(--gradient-5); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.result-detail { color: var(--text-secondary); font-size:1rem; margin-top:0.5rem; }
+.result-breakdown {
+  display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-top:1.5rem;
+}
+.breakdown-card { background: var(--bg-secondary); border-radius:12px; padding:1rem; text-align:center; }
+.breakdown-card .bd-num { font-family:'Poppins'; font-size:1.8rem; font-weight:700; }
+.breakdown-card .bd-label { color: var(--text-muted); font-size:0.75rem; margin-top:0.2rem; text-transform:uppercase; letter-spacing:0.5px; }
+
+.result-question {
+  background: var(--bg-card); border:1px solid var(--border);
+  border-radius:14px; padding:1.2rem 1.5rem; margin-bottom:0.8rem;
+}
+.result-question.correct-q { border-left:4px solid var(--accent-5); }
+.result-question.wrong-q { border-left:4px solid var(--accent-7); }
+.result-question.skipped-q { border-left:4px solid var(--accent-4); }
+.rq-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; }
+.rq-status { padding:0.2rem 0.7rem; border-radius:6px; font-size:0.75rem; font-weight:700; color:#fff; }
+.rq-status.correct { background: var(--accent-5); }
+.rq-status.wrong { background: var(--accent-7); }
+.rq-status.skipped { background: var(--accent-4); }
+.rq-text { font-weight:600; font-size:0.95rem; margin-bottom:0.5rem; }
+.rq-your-ans { font-size:0.85rem; color: var(--text-secondary); }
+.rq-correct-ans { font-size:0.85rem; color: var(--accent-5); font-weight:600; margin-top:0.2rem; }
+
+.retry-btn {
+  display:block; margin:2rem auto; padding:0.9rem 3rem; border-radius:12px;
+  border:none; background: var(--gradient-1); color:#fff; font-size:1rem;
+  font-weight:700; cursor:pointer; font-family:'Poppins'; transition: all 0.3s;
+}
+.retry-btn:hover { transform:translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:8px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius:4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-1); }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.fade-in { animation: fadeIn 0.4s ease-out; }
+
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px) {
+  .hero h1 { font-size:1.8rem; }
+  .navbar { padding:0 1rem; }
+  .nav-btn { padding:0.4rem 0.8rem; font-size:0.8rem; }
+  .section { padding:1rem; }
+  .topic-checkboxes { grid-template-columns:1fr; }
+  .result-breakdown { grid-template-columns:1fr; }
+  .test-header { flex-direction:column; gap:0.5rem; }
+}
+
+/* Back to top */
+.back-top {
+  position:fixed; bottom:2rem; right:2rem; width:44px; height:44px;
+  border-radius:12px; background: var(--gradient-1); color:#fff;
+  border:none; cursor:pointer; font-size:1.2rem; display:none;
+  align-items:center; justify-content:center; z-index:999;
+  box-shadow: 0 4px 15px rgba(99,102,241,0.3); transition: all 0.3s;
+}
+.back-top:hover { transform:translateY(-3px); }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-brand">HRM 6021 <span>Study Hub</span></div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showSection('notes')">📝 Notes</button>
+    <button class="nav-btn" onclick="showSection('mcq')">❓ MCQ</button>
+    <button class="nav-btn" onclick="showSection('test')">🎯 Test</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>HRM 6021 Final Prep</h1>
+  <p>Your ultimate study companion — detailed notes, topic-wise MCQs, and timed practice tests</p>
+  <div class="hero-stats">
+    <div class="stat-card"><div class="num" style="color:var(--accent-1)">66</div><div class="label">Classes</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--accent-3)">120</div><div class="label">Exam Qs</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--accent-5)">200+</div><div class="label">MCQs</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--accent-4)">7</div><div class="label">Topics</div></div>
+  </div>
+</div>
+
+<!-- ==================== NOTES SECTION ==================== -->
+<div class="section active" id="notes-section">
+  <div id="notes-container"></div>
+</div>
+
+<!-- ==================== MCQ SECTION ==================== -->
+<div class="section" id="mcq-section">
+  <div class="mcq-controls">
+    <div class="toggle-wrap">
+      <label>Show All Answers</label>
+      <div class="toggle" id="showAllToggle" onclick="toggleShowAll()">
+        <div class="knob"></div>
+      </div>
+    </div>
+    <div style="color:var(--text-muted);font-size:0.85rem" id="mcqCount">Loading...</div>
+  </div>
+  <div class="mcq-topic-tabs" id="mcqTabs"></div>
+  <div id="mcq-container"></div>
+</div>
+
+<!-- ==================== TEST SECTION ==================== -->
+<div class="section" id="test-section">
+  <!-- Setup -->
+  <div class="test-setup" id="testSetup">
+    <h2>🎯 Configure Your Test</h2>
+    <div class="test-field">
+      <label>Select Topics</label>
+      <div class="topic-checkboxes" id="testTopicChecks"></div>
+    </div>
+    <div class="test-field">
+      <label>Total Questions</label>
+      <input type="number" id="testQCount" min="5" max="200" value="20">
+    </div>
+    <div class="test-field">
+      <label>Time Limit (minutes)</label>
+      <input type="number" id="testTimeLimit" min="5" max="180" value="30">
+    </div>
+    <button class="start-test-btn" id="startTestBtn" onclick="startTest()">🚀 Start Test</button>
+  </div>
+
+  <!-- Test In Progress -->
+  <div class="test-area" id="testArea">
+    <div class="test-header">
+      <div>
+        <div class="test-progress" id="testProgress">Q 1/20</div>
+        <div class="test-progress-bar"><div class="test-progress-fill" id="testProgressFill" style="width:5%"></div></div>
+      </div>
+      <div class="test-timer" id="testTimer">30:00</div>
+    </div>
+    <div id="testQuestionContainer"></div>
+    <div class="test-nav">
+      <button class="test-nav-btn" id="prevBtn" onclick="prevQuestion()" disabled>⬅ Previous</button>
+      <button class="test-nav-btn" onclick="skipQuestion()" style="border-color:var(--accent-4);color:var(--accent-4)">⏭ Skip</button>
+      <button class="test-nav-btn primary" id="nextBtn" onclick="nextQuestion()">Next ➡</button>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="test-results" id="testResults"></div>
+</div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// ==================== DATA ====================
+const TOPICS = [
+  { id:'recruitment', name:'Recruitment Process', color:'var(--topic1)', gradient:'var(--gradient-1)', classes:[1,12], icon:'🔍' },
+  { id:'selection', name:'Selection Techniques', color:'var(--topic2)', gradient:'var(--gradient-6)', classes:[13,20], icon:'✅' },
+  { id:'training', name:'Training & Development', color:'var(--topic3)', gradient:'var(--gradient-2)', classes:[21,30], icon:'📚' },
+  { id:'performance', name:'Performance Management', color:'var(--topic4)', gradient:'var(--gradient-5)', classes:[31,40], icon:'📈' },
+  { id:'compensation', name:'Compensation Management', color:'var(--topic5)', gradient:'var(--gradient-3)', classes:[41,50], icon:'💰' },
+  { id:'industrial', name:'Industrial Relations', color:'var(--topic6)', gradient:'var(--gradient-4)', classes:[51,60], icon:'🤝' },
+  { id:'hraudit', name:'HR Audit & Future of HRM', color:'var(--topic7)', gradient:'var(--gradient-7)', classes:[61,66], icon:'🔮' }
+];
+
+const CLASS_DATA = {
+1:{title:"Introduction to Recruitment Process",topic:"recruitment",notes:["Recruitment is the process of identifying and hiring suitable candidates","It is the first step in building an effective workforce","Recruitment connects employers with potential employees","It involves sourcing, screening, and selection","Recruitment ensures the right person is hired for the right job","It supports organizational growth and performance","HR professionals manage recruitment activities","Effective recruitment improves business success"],faqs:[{q:"What is recruitment?",a:"It is the process of hiring suitable candidates"},{q:"Why is recruitment important?",a:"It ensures the right talent is hired"},{q:"Who manages recruitment?",a:"HR professionals manage recruitment"},{q:"What are recruitment steps?",a:"Sourcing, screening, and selection"}]},
+2:{title:"Types of Recruitment",topic:"recruitment",notes:["Recruitment can be internal or external","Internal recruitment involves hiring from within the organization","External recruitment involves hiring from outside the organization","Internal recruitment includes promotion and transfer","External recruitment includes job portals and agencies","Internal recruitment is faster and cost-effective","External recruitment provides a wider talent pool","Choosing the right type improves hiring efficiency"],faqs:[{q:"What are the types of recruitment?",a:"Internal and external recruitment"},{q:"What is internal recruitment?",a:"Hiring from within the organization"},{q:"What is external recruitment?",a:"Hiring from outside the organization"},{q:"Why is external recruitment important?",a:"It provides more candidate options"}]},
+3:{title:"Recruitment Planning",topic:"recruitment",notes:["Recruitment planning identifies hiring needs","It ensures a structured recruitment process","It includes workforce planning and job analysis","It helps determine the number of employees required","It reduces hiring errors and delays","Planning saves time and cost","HR develops recruitment strategies","Effective planning improves hiring quality"],faqs:[{q:"What is recruitment planning?",a:"It is the process of planning hiring needs"},{q:"Why is recruitment planning important?",a:"It ensures efficient hiring"},{q:"Who is responsible for recruitment planning?",a:"HR professionals"},{q:"What are the elements of recruitment planning?",a:"Workforce planning and strategy"}]},
+4:{title:"Job Analysis",topic:"recruitment",notes:["Job analysis studies job roles and responsibilities","It identifies tasks, duties, and skills","It is the basis for job description and specification","It ensures accurate hiring","HR conducts job analysis","It improves recruitment efficiency","It supports training and evaluation","It reduces hiring errors"],faqs:[{q:"What is job analysis?",a:"It is the process of analyzing job roles"},{q:"Why is job analysis important?",a:"It improves hiring accuracy"},{q:"Who conducts job analysis?",a:"HR professionals"},{q:"What is the result of job analysis?",a:"Job description and specification"}]},
+5:{title:"Job Description & Job Specification",topic:"recruitment",notes:["Job description defines duties and responsibilities","Job specification defines required skills and qualifications","JD focuses on the job","JS focuses on the candidate","Both are based on job analysis","JD includes tasks and reporting structure","JS includes education and experience","They improve recruitment accuracy"],faqs:[{q:"What is job description?",a:"It defines job duties"},{q:"What is job specification?",a:"It defines candidate requirements"},{q:"What is the difference between JD and JS?",a:"JD is job-focused, JS is candidate-focused"},{q:"Why are JD and JS important?",a:"They improve hiring accuracy"}]},
+6:{title:"Sources of Recruitment",topic:"recruitment",notes:["Recruitment sources are ways to find candidates","They are internal or external","Internal sources include promotion","External sources include job portals","Internal recruitment is quick and low cost","External recruitment offers more candidates","Proper source improves hiring","HR selects sources based on job needs"],faqs:[{q:"What are recruitment sources?",a:"Methods to find candidates"},{q:"What are types of sources?",a:"Internal and external"},{q:"Example of internal source?",a:"Promotion"},{q:"Why use external sources?",a:"To get more candidates"}]},
+7:{title:"Recruitment Channels",topic:"recruitment",notes:["Channels are platforms used to reach candidates","Examples include job portals and social media","Online channels are widely used","Offline channels include job fairs","Channels improve candidate reach","They help faster recruitment","HR selects the best channel","Effective channels improve hiring"],faqs:[{q:"What are recruitment channels?",a:"Platforms to attract candidates"},{q:"Examples of channels?",a:"Job portals and social media"},{q:"Why are channels important?",a:"They improve reach"},{q:"Who selects channels?",a:"HR professionals"}]},
+8:{title:"Screening of Candidates",topic:"recruitment",notes:["Screening filters suitable candidates","It is the first step after application","It involves resume review","It removes unsuitable candidates","It saves time and effort","HR shortlists candidates","It improves interview quality","It increases efficiency"],faqs:[{q:"What is screening?",a:"Selecting suitable candidates"},{q:"Why is screening important?",a:"It saves time"},{q:"Who performs screening?",a:"HR professionals"},{q:"Outcome of screening?",a:"Shortlisted candidates"}]},
+9:{title:"Interview Process",topic:"recruitment",notes:["Interview evaluates candidates directly","It assesses skills and attitude","It can be structured or unstructured","HR and managers conduct interviews","It is a key selection step","Proper questions improve evaluation","Feedback helps decision-making","It improves candidate experience"],faqs:[{q:"What is an interview?",a:"Candidate evaluation process"},{q:"Why is interview important?",a:"It assesses suitability"},{q:"Who conducts interviews?",a:"HR and managers"},{q:"Purpose of interview?",a:"Final evaluation"}]},
+10:{title:"Selection Process",topic:"recruitment",notes:["Selection chooses the best candidate","It follows interview","It ensures right hiring","It evaluates performance and skills","HR and managers decide","It reduces hiring risks","It improves productivity","It supports success"],faqs:[{q:"What is selection?",a:"Choosing the best candidate"},{q:"Why is selection important?",a:"Reduces hiring risk"},{q:"Who is involved?",a:"HR and managers"},{q:"Outcome of selection?",a:"Job offer"}]},
+11:{title:"Offer & Joining",topic:"recruitment",notes:["Offer process starts after selection","Offer letter is issued","It includes salary and role","Candidate must accept the offer","Joining involves documentation","HR manages onboarding","Smooth joining improves experience","It increases retention"],faqs:[{q:"What is an offer letter?",a:"Job offer document"},{q:"What is joining process?",a:"Employee onboarding process"},{q:"Why is joining important?",a:"Ensures smooth start"},{q:"Who manages joining?",a:"HR professionals"}]},
+12:{title:"Post-Selection Activities",topic:"recruitment",notes:["Activities after selection are post-selection","Includes background verification","Documents are verified","HR ensures compliance","Documentation is completed","Queries are addressed","Records are maintained","It completes recruitment"],faqs:[{q:"What are post-selection activities?",a:"Tasks after selection"},{q:"Why is verification important?",a:"Ensures authenticity"},{q:"Who performs it?",a:"HR professionals"},{q:"Purpose?",a:"Complete recruitment process"}]},
+13:{title:"Introduction to Selection Techniques",topic:"selection",notes:["Selection techniques are methods used to choose the best candidate","They help evaluate skills and abilities","Common techniques include tests and interviews","They improve hiring accuracy","They reduce hiring risks","HR uses structured methods","They ensure fairness in hiring","They support better decision-making"],faqs:[{q:"What are selection techniques?",a:"Methods used to select candidates"},{q:"Why are they important?",a:"They improve hiring accuracy"},{q:"Who uses them?",a:"HR professionals"},{q:"Examples?",a:"Tests and interviews"}]},
+14:{title:"Types of Selection Tests",topic:"selection",notes:["Selection tests assess candidate abilities","Types include aptitude and personality tests","They measure skills and behavior","Tests improve decision-making","They reduce bias","They ensure objective evaluation","HR conducts these tests","They support better hiring"],faqs:[{q:"What are selection tests?",a:"Tests to evaluate candidates"},{q:"Types?",a:"Aptitude and personality tests"},{q:"Why use tests?",a:"To assess skills objectively"},{q:"Who conducts tests?",a:"HR professionals"}]},
+15:{title:"Aptitude Tests",topic:"selection",notes:["Aptitude tests measure ability and skills","They assess logical reasoning","They evaluate numerical ability","They help predict performance","They are objective","They reduce bias","Used in many organizations","Improve hiring accuracy"],faqs:[{q:"What is aptitude test?",a:"Test of ability"},{q:"What does it measure?",a:"Reasoning and skills"},{q:"Why important?",a:"Predicts performance"},{q:"Who uses it?",a:"HR professionals"}]},
+16:{title:"Personality Tests",topic:"selection",notes:["Personality tests assess behavior","They evaluate attitude and traits","They help understand candidate fit","They support hiring decisions","They reduce mismatch","They improve team compatibility","HR uses them widely","They improve recruitment quality"],faqs:[{q:"What is personality test?",a:"Test of behavior"},{q:"Why important?",a:"Checks cultural fit"},{q:"What does it assess?",a:"Traits and attitude"},{q:"Who uses it?",a:"HR"}]},
+17:{title:"Group Discussion",topic:"selection",notes:["GD evaluates communication skills","It assesses teamwork ability","It measures leadership skills","It helps compare candidates","It is used in selection","It improves decision-making","HR observes behavior","It enhances evaluation"],faqs:[{q:"What is GD?",a:"Group discussion"},{q:"Why used?",a:"To assess communication"},{q:"What is evaluated?",a:"Teamwork and leadership"},{q:"Who conducts GD?",a:"HR"}]},
+18:{title:"Interview Techniques",topic:"selection",notes:["Interview techniques improve evaluation","Structured interviews are planned","Unstructured interviews are flexible","Behavioral interviews assess past actions","Technical interviews test skills","Proper technique improves accuracy","HR uses different methods","It supports better hiring"],faqs:[{q:"What are interview techniques?",a:"Methods of interviewing"},{q:"Types?",a:"Structured and unstructured"},{q:"Why important?",a:"Improve evaluation"},{q:"Who uses them?",a:"HR"}]},
+19:{title:"Final Selection Decision",topic:"selection",notes:["Final decision selects best candidate","It considers all evaluation results","HR and managers decide","It ensures right hiring","It reduces risk","It improves performance","It is a critical step","It finalizes recruitment"],faqs:[{q:"What is final selection?",a:"Choosing best candidate"},{q:"Who decides?",a:"HR and managers"},{q:"Why important?",a:"Ensures right hiring"},{q:"Outcome?",a:"Job offer"}]},
+20:{title:"Selection Errors",topic:"selection",notes:["Selection errors lead to wrong hiring","They reduce performance","They increase cost","Common errors include bias","Poor evaluation causes errors","Training reduces errors","Structured process helps","Avoiding errors improves hiring"],faqs:[{q:"What are selection errors?",a:"Mistakes in hiring"},{q:"Why occur?",a:"Poor evaluation"},{q:"Example?",a:"Bias"},{q:"How reduce?",a:"Use proper methods"}]},
+21:{title:"Introduction to Training",topic:"training",notes:["Training is the process of improving employee skills and knowledge","It helps employees perform their jobs effectively","Training enhances productivity and efficiency","It reduces errors and improves quality","Training prepares employees for new roles","It supports organizational growth","HR manages training programs","Effective training improves performance"],faqs:[{q:"What is training?",a:"It is the process of improving employee skills"},{q:"Why is training important?",a:"It improves performance and productivity"},{q:"Who manages training?",a:"HR professionals"},{q:"What is the purpose of training?",a:"To develop employee skills"}]},
+22:{title:"Types of Training",topic:"training",notes:["Training can be on-the-job or off-the-job","On-the-job training occurs at the workplace","Off-the-job training occurs outside the workplace","Technical training improves job skills","Soft skills training improves communication","Training methods vary based on job needs","Proper training improves efficiency","HR selects suitable training methods"],faqs:[{q:"What are types of training?",a:"On-the-job and off-the-job training"},{q:"What is on-the-job training?",a:"Training at the workplace"},{q:"What is off-the-job training?",a:"Training outside the workplace"},{q:"Why is training type important?",a:"It affects learning effectiveness"}]},
+23:{title:"Training Needs Assessment",topic:"training",notes:["Training needs assessment identifies skill gaps","It evaluates employee performance","It determines training requirements","It improves training effectiveness","It aligns training with goals","HR conducts needs assessment","It reduces unnecessary training","It ensures targeted development"],faqs:[{q:"What is training needs assessment?",a:"Identifying skill gaps"},{q:"Why important?",a:"Improves training effectiveness"},{q:"Who conducts it?",a:"HR professionals"},{q:"Outcome?",a:"Training requirements"}]},
+24:{title:"On-the-Job Training",topic:"training",notes:["On-the-job training happens at the workplace","It includes job rotation and mentoring","It is practical and directly applicable","It improves job-specific skills","It is cost-effective","Supervisors provide training","It enhances immediate performance","It supports real-time learning"],faqs:[{q:"What is on-the-job training?",a:"Training at the workplace"},{q:"Examples?",a:"Job rotation and mentoring"},{q:"Why effective?",a:"Directly applicable"},{q:"Who provides it?",a:"Supervisors"}]},
+25:{title:"Off-the-Job Training",topic:"training",notes:["Off-the-job training occurs outside the workplace","It includes workshops and seminars","It provides focused learning","It reduces workplace distractions","It improves knowledge","It involves external trainers","It supports skill development","It enhances creativity"],faqs:[{q:"What is off-the-job training?",a:"Training outside the workplace"},{q:"Examples?",a:"Workshops and seminars"},{q:"Why important?",a:"Provides focused learning"},{q:"Benefit?",a:"Reduces distractions"}]},
+26:{title:"Training Methods",topic:"training",notes:["Training methods include various approaches","Lectures provide theoretical knowledge","Case studies develop analytical skills","Role playing improves interpersonal skills","Simulations create real scenarios","E-learning is flexible and accessible","Blended learning combines methods","HR selects appropriate methods"],faqs:[{q:"What are training methods?",a:"Approaches to deliver training"},{q:"Examples?",a:"Lectures, case studies, role playing"},{q:"Why important?",a:"They affect learning outcomes"},{q:"Who selects them?",a:"HR professionals"}]},
+27:{title:"Training Design",topic:"training",notes:["Training design plans training programs","It defines objectives and content","It selects methods and materials","It ensures structured learning","It aligns with organizational goals","HR designs training programs","It improves training effectiveness","Proper design ensures success"],faqs:[{q:"What is training design?",a:"Planning training programs"},{q:"What does it include?",a:"Objectives and content"},{q:"Why important?",a:"Ensures structured learning"},{q:"Who designs it?",a:"HR professionals"}]},
+28:{title:"Training Implementation",topic:"training",notes:["Training implementation is executing training programs","It involves trainers and participants","It ensures proper delivery","It requires coordination","It improves learning outcomes","HR manages implementation","It ensures participation","It supports skill development"],faqs:[{q:"What is training implementation?",a:"Execution of training programs"},{q:"Who manages it?",a:"HR professionals"},{q:"Why important?",a:"Ensures effective delivery"},{q:"What is required?",a:"Coordination and planning"}]},
+29:{title:"Training Evaluation",topic:"training",notes:["Training evaluation measures effectiveness","It assesses learning outcomes","It improves future training","It identifies gaps","It ensures return on investment","HR conducts evaluation","It improves performance","It ensures quality training"],faqs:[{q:"What is training evaluation?",a:"Measuring training effectiveness"},{q:"Why important?",a:"Improves future programs"},{q:"Who conducts it?",a:"HR professionals"},{q:"Outcome?",a:"Performance improvement"}]},
+30:{title:"Importance of Training",topic:"training",notes:["Training improves employee skills","It increases productivity","It reduces errors","It enhances job satisfaction","It supports career growth","It improves organizational performance","It builds competitive advantage","It ensures long-term success"],faqs:[{q:"Why is training important?",a:"It improves skills and productivity"},{q:"How does it help employees?",a:"Enhances performance and growth"},{q:"How does it help organizations?",a:"Improves efficiency and success"},{q:"Who benefits from training?",a:"Employees and organizations"}]},
+31:{title:"Introduction to Performance Management",topic:"performance",notes:["Performance management is the process of evaluating employee performance","It ensures employees meet organizational goals","It improves productivity and efficiency","It involves goal setting and evaluation","It supports employee development","HR manages performance systems","It improves organizational success","Continuous feedback is essential"],faqs:[{q:"What is performance management?",a:"Evaluating employee performance"},{q:"Why is it important?",a:"Improves productivity"},{q:"Who manages it?",a:"HR professionals"},{q:"What does it involve?",a:"Goal setting and evaluation"}]},
+32:{title:"Performance Appraisal",topic:"performance",notes:["Performance appraisal evaluates employee performance periodically","It helps identify strengths and weaknesses","It supports promotions and rewards","It improves employee motivation","It provides feedback","HR conducts appraisal systems","It supports career development","It improves performance"],faqs:[{q:"What is performance appraisal?",a:"Evaluation of employee performance"},{q:"Why important?",a:"Improves motivation"},{q:"Who conducts it?",a:"HR"},{q:"Purpose?",a:"Feedback and development"}]},
+33:{title:"Methods of Performance Appraisal",topic:"performance",notes:["Appraisal methods measure performance","Traditional methods include rating scales","Modern methods include 360-degree feedback","Methods vary by organization","Proper method improves evaluation","HR selects methods","It ensures fairness","It improves decision-making"],faqs:[{q:"What are appraisal methods?",a:"Ways to evaluate performance"},{q:"Examples?",a:"Rating scale and 360-degree feedback"},{q:"Why important?",a:"Improves evaluation"},{q:"Who selects methods?",a:"HR"}]},
+34:{title:"360-Degree Feedback",topic:"performance",notes:["360-degree feedback collects feedback from multiple sources","It includes peers, managers, and subordinates","It provides comprehensive evaluation","It improves self-awareness","It supports development","It reduces bias","HR manages the process","It improves performance"],faqs:[{q:"What is 360-degree feedback?",a:"Feedback from multiple sources"},{q:"Why important?",a:"Provides complete evaluation"},{q:"Who gives feedback?",a:"Peers, managers, subordinates"},{q:"Benefit?",a:"Improves performance"}]},
+35:{title:"Performance Standards",topic:"performance",notes:["Performance standards define expected performance","They guide employee behavior","They ensure consistency","They improve evaluation accuracy","They align with goals","HR sets standards","They support performance measurement","Clear standards improve results"],faqs:[{q:"What are performance standards?",a:"Expected performance levels"},{q:"Why important?",a:"Guide employees"},{q:"Who sets them?",a:"HR"},{q:"Benefit?",a:"Improves evaluation"}]},
+36:{title:"Performance Feedback",topic:"performance",notes:["Feedback provides information about performance","It helps improve behavior","It motivates employees","It supports development","It should be continuous","HR encourages feedback","It improves communication","It enhances performance"],faqs:[{q:"What is feedback?",a:"Information about performance"},{q:"Why important?",a:"Improves behavior"},{q:"Who gives feedback?",a:"Managers and HR"},{q:"Benefit?",a:"Improves performance"}]},
+37:{title:"Performance Improvement",topic:"performance",notes:["Performance improvement focuses on enhancing performance","It identifies weaknesses","It provides training and support","It improves productivity","It reduces errors","HR supports improvement plans","Continuous improvement is important","It leads to success"],faqs:[{q:"What is performance improvement?",a:"Enhancing performance"},{q:"Why important?",a:"Improves productivity"},{q:"How achieved?",a:"Training and support"},{q:"Who manages it?",a:"HR"}]},
+38:{title:"Employee Motivation",topic:"performance",notes:["Motivation encourages employees to perform better","It increases productivity","It improves job satisfaction","It reduces turnover","It supports organizational goals","HR uses motivation strategies","Rewards improve motivation","It enhances performance"],faqs:[{q:"What is motivation?",a:"Encouraging performance"},{q:"Why important?",a:"Improves productivity"},{q:"How to motivate?",a:"Rewards and recognition"},{q:"Who manages motivation?",a:"HR"}]},
+39:{title:"Rewards and Incentives",topic:"performance",notes:["Rewards recognize employee performance","Incentives motivate employees","They improve productivity","They increase satisfaction","They support retention","HR designs reward systems","Monetary and non-monetary rewards exist","They improve performance"],faqs:[{q:"What are rewards?",a:"Recognition for performance"},{q:"What are incentives?",a:"Motivational benefits"},{q:"Why important?",a:"Increase motivation"},{q:"Who designs them?",a:"HR"}]},
+40:{title:"Importance of Performance Management",topic:"performance",notes:["Performance management improves efficiency","It aligns employees with goals","It improves productivity","It supports development","It enhances communication","It reduces errors","It ensures accountability","It drives organizational success"],faqs:[{q:"Why is performance management important?",a:"Improves productivity"},{q:"How does it help employees?",a:"Supports development"},{q:"How does it help organizations?",a:"Improves efficiency"},{q:"Who benefits?",a:"Employees and organizations"}]},
+41:{title:"Introduction to Compensation Management",topic:"compensation",notes:["Compensation management deals with employee salary and benefits","It ensures fair payment","It motivates employees","It improves retention","It supports performance","HR designs compensation systems","It includes salary and incentives","It ensures job satisfaction"],faqs:[{q:"What is compensation management?",a:"Managing employee pay"},{q:"Why important?",a:"Motivates employees"},{q:"Who manages it?",a:"HR"},{q:"What does it include?",a:"Salary and benefits"}]},
+42:{title:"Components of Compensation",topic:"compensation",notes:["Compensation includes salary and benefits","It has fixed and variable components","Salary is fixed pay","Incentives are variable pay","Benefits include insurance","It improves satisfaction","HR designs components","It supports retention"],faqs:[{q:"What are compensation components?",a:"Salary and benefits"},{q:"What is fixed pay?",a:"Regular salary"},{q:"What is variable pay?",a:"Incentives"},{q:"Why important?",a:"Improves satisfaction"}]},
+43:{title:"Salary Structure",topic:"compensation",notes:["Salary structure defines pay components","It includes basic, HRA, allowances","It ensures transparency","It helps budgeting","It improves satisfaction","HR designs salary structure","It ensures fairness","It supports compliance"],faqs:[{q:"What is salary structure?",a:"Breakdown of salary"},{q:"What does it include?",a:"Basic and allowances"},{q:"Why important?",a:"Ensures transparency"},{q:"Who designs it?",a:"HR"}]},
+44:{title:"Incentives and Bonus",topic:"compensation",notes:["Incentives reward performance","Bonus is additional payment","They motivate employees","They improve productivity","They increase satisfaction","HR designs incentive plans","They support performance","They reduce turnover"],faqs:[{q:"What are incentives?",a:"Performance rewards"},{q:"What is bonus?",a:"Extra payment"},{q:"Why important?",a:"Motivates employees"},{q:"Who designs them?",a:"HR"}]},
+45:{title:"Employee Benefits",topic:"compensation",notes:["Benefits include insurance and leave","They improve employee welfare","They increase satisfaction","They support retention","They improve work-life balance","HR manages benefits","They enhance motivation","They improve performance"],faqs:[{q:"What are employee benefits?",a:"Extra facilities for employees"},{q:"Examples?",a:"Insurance and leave"},{q:"Why important?",a:"Improves satisfaction"},{q:"Who manages them?",a:"HR"}]},
+46:{title:"Wage and Salary Administration",topic:"compensation",notes:["It manages wages and salaries","It ensures fair payment","It follows legal rules","It improves employee trust","HR manages administration","It ensures consistency","It supports compliance","It improves satisfaction"],faqs:[{q:"What is wage administration?",a:"Managing wages"},{q:"Why important?",a:"Ensures fairness"},{q:"Who manages it?",a:"HR"},{q:"Benefit?",a:"Improves trust"}]},
+47:{title:"Job Evaluation",topic:"compensation",notes:["Job evaluation determines job value","It helps set salary","It ensures fairness","It compares jobs","HR conducts evaluation","It supports compensation design","It improves equity","It reduces disputes"],faqs:[{q:"What is job evaluation?",a:"Determining job value"},{q:"Why important?",a:"Ensures fairness"},{q:"Who conducts it?",a:"HR"},{q:"Outcome?",a:"Salary structure"}]},
+48:{title:"Pay Equity",topic:"compensation",notes:["Pay equity ensures equal pay","It avoids discrimination","It improves fairness","It builds trust","HR ensures equity","It supports legal compliance","It improves morale","It enhances reputation"],faqs:[{q:"What is pay equity?",a:"Equal pay for equal work"},{q:"Why important?",a:"Ensures fairness"},{q:"Who ensures it?",a:"HR"},{q:"Benefit?",a:"Improves trust"}]},
+49:{title:"Compensation Policies",topic:"compensation",notes:["Policies guide compensation decisions","They ensure consistency","They support fairness","They align with goals","HR develops policies","They improve transparency","They reduce conflicts","They support compliance"],faqs:[{q:"What are compensation policies?",a:"Guidelines for pay"},{q:"Why important?",a:"Ensures consistency"},{q:"Who develops them?",a:"HR"},{q:"Benefit?",a:"Improves fairness"}]},
+50:{title:"Importance of Compensation Management",topic:"compensation",notes:["It improves employee satisfaction","It motivates employees","It improves retention","It supports performance","It attracts talent","HR manages systems","It ensures fairness","It supports success"],faqs:[{q:"Why is compensation important?",a:"Motivates employees"},{q:"How helps organization?",a:"Improves performance"},{q:"Who benefits?",a:"Employees and organization"},{q:"Who manages it?",a:"HR"}]},
+51:{title:"Introduction to Industrial Relations",topic:"industrial",notes:["Industrial Relations (IR) refers to the relationship between employers and employees","It ensures harmony in the workplace","It helps in conflict resolution","It improves communication","It supports productivity","HR manages industrial relations","It includes unions and management interaction","Good IR ensures organizational success"],faqs:[{q:"What is Industrial Relations?",a:"Relationship between employer and employees"},{q:"Why is it important?",a:"Ensures harmony and productivity"},{q:"Who manages IR?",a:"HR professionals"},{q:"What does IR include?",a:"Employer-employee relationship"}]},
+52:{title:"Trade Unions",topic:"industrial",notes:["Trade unions are organizations of workers","They protect employee rights","They improve working conditions","They support collective voice","They help in negotiation","They reduce exploitation","HR interacts with unions","They promote fairness"],faqs:[{q:"What is a trade union?",a:"Worker organization"},{q:"Why important?",a:"Protects employee rights"},{q:"What do unions do?",a:"Negotiate and represent workers"},{q:"Who interacts with unions?",a:"HR"}]},
+53:{title:"Collective Bargaining",topic:"industrial",notes:["Collective bargaining is negotiation between employer and employees","It resolves disputes","It improves agreements","It ensures fair wages","It improves relations","It involves unions","HR supports bargaining","It promotes harmony"],faqs:[{q:"What is collective bargaining?",a:"Negotiation process"},{q:"Why important?",a:"Resolves disputes"},{q:"Who participates?",a:"Employer and employees"},{q:"Outcome?",a:"Agreement"}]},
+54:{title:"Industrial Disputes",topic:"industrial",notes:["Industrial disputes are conflicts between employer and employees","They affect productivity","They arise due to disagreements","They may lead to strikes","They need resolution","HR manages disputes","Proper handling reduces conflict","It ensures stability"],faqs:[{q:"What is industrial dispute?",a:"Conflict in workplace"},{q:"Why occurs?",a:"Disagreement"},{q:"Who manages it?",a:"HR"},{q:"Impact?",a:"Reduces productivity"}]},
+55:{title:"Conflict Management",topic:"industrial",notes:["Conflict management resolves workplace issues","It improves relationships","It reduces tension","It promotes teamwork","It requires communication","HR manages conflict","It ensures harmony","It improves performance"],faqs:[{q:"What is conflict?",a:"Disagreement"},{q:"What is conflict management?",a:"Resolving conflict"},{q:"Why important?",a:"Improves teamwork"},{q:"Who manages it?",a:"HR"}]},
+56:{title:"Grievance Handling",topic:"industrial",notes:["Grievance is employee complaint","Grievance handling resolves complaints","It improves satisfaction","It reduces conflict","It ensures fairness","HR manages grievances","It improves trust","It supports relations"],faqs:[{q:"What is grievance?",a:"Employee complaint"},{q:"Why important?",a:"Improves satisfaction"},{q:"Who handles it?",a:"HR"},{q:"Outcome?",a:"Conflict resolution"}]},
+57:{title:"Discipline Management",topic:"industrial",notes:["Discipline ensures rule-following","It maintains order","It improves behavior","It ensures efficiency","It requires policies","HR manages discipline","It reduces misconduct","It improves performance"],faqs:[{q:"What is discipline?",a:"Following rules"},{q:"Why important?",a:"Maintains order"},{q:"Who manages it?",a:"HR"},{q:"Benefit?",a:"Improves performance"}]},
+58:{title:"Labor Laws",topic:"industrial",notes:["Labor laws regulate employment","They protect employee rights","They ensure fair treatment","They define working conditions","HR ensures compliance","They reduce disputes","They promote fairness","They support stability"],faqs:[{q:"What are labor laws?",a:"Employment rules"},{q:"Why important?",a:"Protect employees"},{q:"Who ensures compliance?",a:"HR"},{q:"Benefit?",a:"Fair treatment"}]},
+59:{title:"Employee Welfare",topic:"industrial",notes:["Employee welfare improves well-being","It includes facilities and benefits","It improves satisfaction","It supports retention","It enhances productivity","HR manages welfare","It improves morale","It supports development"],faqs:[{q:"What is employee welfare?",a:"Employee well-being support"},{q:"Why important?",a:"Improves satisfaction"},{q:"Who manages it?",a:"HR"},{q:"Benefit?",a:"Improves productivity"}]},
+60:{title:"Importance of Industrial Relations",topic:"industrial",notes:["IR ensures workplace harmony","It improves communication","It reduces conflict","It improves productivity","It supports cooperation","HR manages IR","It improves performance","It ensures success"],faqs:[{q:"Why is IR important?",a:"Ensures harmony"},{q:"How helps organization?",a:"Improves productivity"},{q:"Who manages IR?",a:"HR"},{q:"Who benefits?",a:"Employees and organization"}]},
+61:{title:"Introduction to HR Audit",topic:"hraudit",notes:["HR audit is the evaluation of HR policies and practices","It checks effectiveness of HR functions","It ensures compliance with laws","It identifies strengths and weaknesses","It improves HR performance","HR audit is conducted periodically","It supports strategic planning","It improves organizational efficiency"],faqs:[{q:"What is HR audit?",a:"Evaluation of HR practices"},{q:"Why is it important?",a:"Improves HR effectiveness"},{q:"Who conducts HR audit?",a:"HR professionals or auditors"},{q:"What is its purpose?",a:"To improve HR performance"}]},
+62:{title:"Objectives of HR Audit",topic:"hraudit",notes:["HR audit aims to evaluate HR performance","It ensures legal compliance","It identifies gaps in HR practices","It improves efficiency","It supports decision-making","It ensures policy effectiveness","It enhances HR strategy","It promotes continuous improvement"],faqs:[{q:"What are objectives of HR audit?",a:"To evaluate HR functions"},{q:"Why important?",a:"Ensures compliance and efficiency"},{q:"What does it identify?",a:"Gaps in HR practices"},{q:"Outcome?",a:"Improved HR performance"}]},
+63:{title:"HR Audit Process",topic:"hraudit",notes:["HR audit follows a structured process","It includes planning and data collection","It involves analysis and evaluation","It identifies gaps and issues","It provides recommendations","HR manages the audit process","It improves HR effectiveness","It supports better decisions"],faqs:[{q:"What is HR audit process?",a:"Steps to evaluate HR"},{q:"What are steps?",a:"Planning, data collection, evaluation"},{q:"Why important?",a:"Improves HR practices"},{q:"Who manages it?",a:"HR"}]},
+64:{title:"HR Metrics and Analytics",topic:"hraudit",notes:["HR metrics measure HR performance","Analytics helps in decision-making","It includes turnover and productivity data","It improves HR strategy","It supports data-driven decisions","HR uses tools for analysis","It improves efficiency","It enhances performance"],faqs:[{q:"What are HR metrics?",a:"Measures of HR performance"},{q:"Why important?",a:"Supports decision-making"},{q:"What is HR analytics?",a:"Data analysis in HR"},{q:"Benefit?",a:"Improves efficiency"}]},
+65:{title:"Emerging Trends in HRM",topic:"hraudit",notes:["HRM is evolving with technology","AI and automation are used","Remote work is increasing","Digital HR is growing","Employee experience is important","HR analytics is widely used","Learning is continuous","Trends improve HR practices"],faqs:[{q:"What are HR trends?",a:"New developments in HR"},{q:"Example?",a:"AI and remote work"},{q:"Why important?",a:"Improves HR practices"},{q:"Who adopts trends?",a:"Organizations"}]},
+66:{title:"Future of HRM",topic:"hraudit",notes:["HRM will become more technology-driven","AI will play a major role","Focus will be on employee experience","Data-driven decisions will increase","HR roles will become strategic","Continuous learning will be important","Flexibility will increase","HR will drive organizational success"],faqs:[{q:"What is future of HRM?",a:"Technology-driven HR"},{q:"What role will AI play?",a:"Major role in HR"},{q:"What will HR focus on?",a:"Employee experience"},{q:"Why important?",a:"Ensures future success"}]}
+};
+
+// ==================== MCQ DATA ====================
+const MCQ_DATA = [
+// RECRUITMENT (Topic 0)
+{q:"Which of the following best describes the primary objective of recruitment in an organization?",opts:["To maximize the number of applicants regardless of quality","To identify, attract, and hire suitable candidates for job vacancies","To fill positions as quickly as possible with minimal cost","To replace employees who are underperforming"],correct:1,topic:0},
+{q:"When an organization fills a vacancy through promotion of an existing employee, this is classified as:",opts:["External recruitment with internal preference","Direct recruitment through referral","Internal recruitment method","Lateral recruitment strategy"],correct:2,topic:0},
+{q:"What is the key advantage of external recruitment over internal recruitment?",opts:["It is always faster and cheaper","It provides a wider talent pool with fresh perspectives","It requires no screening process","It guarantees better employee retention"],correct:1,topic:0},
+{q:"Recruitment planning primarily helps organizations to:",opts:["Eliminate the need for job analysis","Reduce hiring errors and delays by identifying needs strategically","Avoid using external recruitment channels","Automate the entire selection process"],correct:1,topic:0},
+{q:"Job analysis serves as the foundation for which of the following HR activities?",opts:["Only performance appraisal","Only compensation management","Job description, job specification, recruitment, and training","Only employee welfare programs"],correct:2,topic:0},
+{q:"The fundamental difference between Job Description and Job Specification is:",opts:["JD is for internal use only while JS is external","JD defines duties/responsibilities; JS defines required skills/qualifications","JD is written by employees while JS is written by HR","JD covers salary while JS covers benefits"],correct:1,topic:0},
+{q:"Which recruitment source is typically faster and more cost-effective but may limit diversity?",opts:["Job portals and career websites","Employment agencies and consultants","Internal sources such as promotions and transfers","Social media recruitment campaigns"],correct:2,topic:0},
+{q:"The primary purpose of screening candidates is to:",opts:["Reject all applicants who lack advanced degrees","Filter out unsuitable candidates and shortlist those who meet criteria","Conduct final interviews with all applicants","Determine salary expectations of candidates"],correct:1,topic:0},
+{q:"A structured interview differs from an unstructured interview in that:",opts:["Structured interviews use predetermined questions; unstructured interviews are flexible","Structured interviews are always longer than unstructured ones","Unstructured interviews are more reliable for hiring decisions","Structured interviews do not allow follow-up questions"],correct:0,topic:0},
+{q:"Which of the following is NOT a typical post-selection activity?",opts:["Background verification","Document verification and compliance checks","Conducting aptitude tests for shortlisted candidates","Addressing queries and maintaining records"],correct:2,topic:0},
+{q:"An offer letter typically includes which of the following information?",opts:["Only the job title and start date","Salary, role details, and terms of employment","Only the salary structure and benefits","Performance appraisal schedule and KPIs"],correct:1,topic:0},
+{q:"Which recruitment channel has become increasingly dominant in modern hiring due to its wide reach?",opts:["Walk-in interviews only","Newspaper classified advertisements","Online job portals and social media platforms","Employee referral programs exclusively"],correct:2,topic:0},
+{q:"The concept of 'Right Person for the Right Job' emphasizes:",opts:["Hiring candidates who demand the lowest salary","Matching candidate skills and qualifications with job requirements","Filling positions quickly regardless of candidate fit","Promoting internal candidates over external applicants"],correct:1,topic:0},
+{q:"Workforce planning and job analysis are key elements of which recruitment activity?",opts:["Selection technique design","Recruitment planning","Performance appraisal","Compensation management"],correct:1,topic:0},
+{q:"What is the immediate outcome of an effective screening process?",opts:["A final hiring decision","A list of shortlisted candidates for interviews","A complete training plan","A salary negotiation strategy"],correct:1,topic:0},
+// SELECTION (Topic 1)
+{q:"Which selection technique is most effective for reducing subjective bias in hiring decisions?",opts:["Unstructured interviews","Personal referrals from managers","Structured selection tests with standardized scoring","Informal coffee chats with candidates"],correct:2,topic:1},
+{q:"An aptitude test primarily measures:",opts:["A candidate's personality traits and emotional intelligence","A candidate's innate abilities, logical reasoning, and numerical skills","A candidate's past work experience and achievements","A candidate's cultural preferences and hobbies"],correct:1,topic:1},
+{q:"The main purpose of personality tests in selection is to:",opts:["Replace the need for interviews entirely","Assess behavioral traits and determine cultural fit within the organization","Evaluate technical skills required for the job","Determine the candidate's salary expectations"],correct:1,topic:1},
+{q:"In a Group Discussion, which of the following skills is NOT typically evaluated?",opts:["Communication and interpersonal skills","Leadership and teamwork ability","Individual technical coding proficiency","Ability to articulate and persuade others"],correct:2,topic:1},
+{q:"A behavioral interview technique is distinctive because it:",opts:["Asks candidates to solve technical puzzles on the spot","Assesses past actions and behaviors as predictors of future performance","Focuses exclusively on hypothetical scenarios","Relies on gut feeling and interviewer intuition"],correct:1,topic:1},
+{q:"What is the most significant risk associated with selection errors?",opts:["Increased training costs and potential wrong hiring that reduces performance","The need to conduct more interviews","Higher salary demands from candidates","Excessive paperwork and documentation"],correct:0,topic:1},
+{q:"Which of the following best describes the relationship between structured interviews and selection accuracy?",opts:["Structured interviews decrease accuracy due to rigidity","Structured interviews improve accuracy by ensuring consistent evaluation criteria","Structured interviews have no impact on selection accuracy","Structured interviews are only effective for entry-level positions"],correct:1,topic:1},
+{q:"The final selection decision in an organization is typically made by:",opts:["The HR department alone without managerial input","An automated algorithm without human oversight","HR and managers jointly considering all evaluation results","The CEO based on personal preference"],correct:2,topic:1},
+{q:"A technical interview differs from a behavioral interview in that it:",opts:["Focuses on assessing specific job-related skills and knowledge","Evaluates only communication abilities","Is always conducted by external consultants","Relies exclusively on written tests"],correct:0,topic:1},
+{q:"Which selection method is most likely to reduce the 'halo effect' bias?",opts:["Single-interviewer assessment","Unstructured conversational interviews","360-degree evaluation using multiple assessors and methods","Personal recommendation from a senior executive"],correct:2,topic:1},
+{q:"A selection test that measures a candidate's ability to identify patterns and solve logical problems is classified as:",opts:["A personality inventory","An aptitude test emphasizing reasoning ability","A behavioral assessment tool","A job knowledge test"],correct:1,topic:1},
+{q:"Which of the following is a key characteristic of effective selection techniques?",opts:["They rely heavily on interviewer intuition","They ensure fairness, reduce bias, and support objective evaluation","They prioritize speed over accuracy","They eliminate the need for any human judgment"],correct:1,topic:1},
+{q:"Group Discussions are particularly useful in selection because they allow evaluators to:",opts:["Assess only the loudest and most dominant participants","Compare multiple candidates simultaneously on communication and teamwork","Eliminate candidates who are introverted","Test technical knowledge in depth"],correct:1,topic:1},
+{q:"The primary reason organizations use multiple selection techniques rather than relying on a single method is:",opts:["To make the hiring process longer and more rigorous","To reduce cost per hire","To gain a comprehensive assessment from different perspectives","To comply with government regulations only"],correct:2,topic:1},
+{q:"Which of the following represents a common selection error that can be minimized through training?",opts:["Using structured interview guides","Reviewer bias in evaluating candidates","Conducting reference checks","Administering standardized aptitude tests"],correct:1,topic:1},
+// TRAINING (Topic 2)
+{q:"The fundamental difference between on-the-job and off-the-job training is:",opts:["On-the-job is always more expensive than off-the-job","On-the-job occurs at the workplace; off-the-job occurs outside the workplace","Off-the-job training is only for senior management","On-the-job training has no measurable outcomes"],correct:1,topic:2},
+{q:"Training needs assessment is conducted primarily to:",opts:["Justify the training budget to management","Identify skill gaps and determine targeted training requirements","Eliminate all training programs that are not mandatory","Determine which employees should be terminated"],correct:1,topic:2},
+{q:"Which training method is most effective for developing interpersonal and communication skills?",opts:["Lectures and presentations","Role playing exercises","Self-paced e-learning modules","Technical manuals and documentation"],correct:1,topic:2},
+{q:"Job rotation as an on-the-job training method involves:",opts:["Moving employees through different departments to develop versatile skills","Rotating shift schedules for employees","Reassigning underperforming employees to easier roles","Temporary layoffs during slow business periods"],correct:0,topic:2},
+{q:"The Kirkpatrick model is widely used for which training-related activity?",opts:["Designing training curriculum","Evaluating training effectiveness at multiple levels","Selecting training vendors","Calculating training ROI only"],correct:1,topic:2},
+{q:"Which of the following is a key advantage of e-learning as a training method?",opts:["It requires all learners to be present at the same time","It is flexible and accessible, allowing self-paced learning","It completely replaces the need for human trainers","It is always more effective than classroom training"],correct:1,topic:2},
+{q:"Blended learning in training contexts refers to:",opts:["Using only digital resources for training","Combining multiple training methods such as online and face-to-face","Training employees in mixed-age groups","Alternating between different trainers for the same session"],correct:1,topic:2},
+{q:"Which of the following best describes the relationship between training design and training effectiveness?",opts:["Training design has minimal impact on effectiveness","Proper design ensures structured learning aligned with organizational goals","Design only matters for technical training programs","Effectiveness depends solely on trainer personality, not design"],correct:1,topic:2},
+{q:"Off-the-job training methods such as workshops and seminars are particularly valuable because they:",opts:["Are always cheaper than on-the-job training","Provide focused learning free from workplace distractions","Eliminate the need for post-training evaluation","Guarantee immediate performance improvement"],correct:1,topic:2},
+{q:"Training implementation requires which of the following for successful execution?",opts:["Only a well-designed training manual","Coordination between trainers, participants, and HR management","Minimal involvement from HR department","Approval from external regulatory bodies only"],correct:1,topic:2},
+{q:"Case studies as a training method are most effective for:",opts:["Memorizing factual information and procedures","Developing analytical and problem-solving skills through real scenarios","Assessing physical fitness and endurance","Testing typing speed and computer literacy"],correct:1,topic:2},
+{q:"Which of the following is NOT typically considered a benefit of training for employees?",opts:["Enhanced job satisfaction and career growth","Increased productivity and reduced errors","Guaranteed promotion to management positions","Improved skills and knowledge relevant to the job"],correct:2,topic:2},
+{q:"Simulation as a training method is most appropriate when:",opts:["The training content is purely theoretical","Real-world practice would be too risky or expensive","The organization has no budget for training","Employees are already experts in their field"],correct:1,topic:2},
+{q:"The primary purpose of training evaluation is to:",opts:["Justify training costs to the finance department","Measure effectiveness, identify gaps, and improve future training programs","Determine which employees should receive bonuses","Compare training programs across different organizations"],correct:1,topic:2},
+{q:"Mentoring as an on-the-job training approach involves:",opts:["A senior employee guiding and supporting a less experienced employee","Self-study using online resources only","Group lectures by external consultants","Automated computer-based instruction"],correct:0,topic:2},
+// PERFORMANCE (Topic 3)
+{q:"Performance management differs from performance appraisal in that:",opts:["They are identical concepts with no difference","Performance management is a continuous process; appraisal is a periodic evaluation","Appraisal is more comprehensive than management","Management is only for senior employees while appraisal is for all"],correct:1,topic:3},
+{q:"The 360-degree feedback method is distinctive because it:",opts:["Uses only the supervisor's evaluation","Collects feedback from multiple sources including peers, managers, and subordinates","Focuses exclusively on customer feedback","Is conducted only once during an employee's tenure"],correct:1,topic:3},
+{q:"Which of the following is a modern method of performance appraisal?",opts:["Graphic rating scale","360-degree feedback","Ranking method","Checklist method"],correct:1,topic:3},
+{q:"Performance standards serve which critical function in an organization?",opts:["They define expected performance levels and guide employee behavior","They are used only for terminating underperforming employees","They replace the need for manager feedback","They apply only to new employees during probation"],correct:0,topic:3},
+{q:"Effective performance feedback should be:",opts:["Given only during annual reviews","Continuous, constructive, and focused on improvement","Primarily focused on weaknesses and errors","Delivered only in writing to maintain records"],correct:1,topic:3},
+{q:"Which of the following is NOT a typical component of a performance improvement plan?",opts:["Identifying specific weaknesses and areas for development","Providing training and support resources","Automatically reducing the employee's salary","Setting measurable goals and timelines for improvement"],correct:2,topic:3},
+{q:"Intrinsic motivation differs from extrinsic motivation in that:",opts:["Intrinsic comes from internal satisfaction; extrinsic comes from external rewards","Intrinsic is always stronger than extrinsic","Extrinsic motivation includes only monetary rewards","There is no practical difference between them"],correct:0,topic:3},
+{q:"Which of the following best describes the relationship between rewards and employee motivation?",opts:["Rewards have no impact on motivation","Only monetary rewards can motivate employees","Both monetary and non-monetary rewards can enhance motivation and performance","Rewards always lead to decreased performance over time"],correct:2,topic:3},
+{q:"A traditional method of performance appraisal that uses a numerical scale is:",opts:["360-degree feedback","Management by Objectives (MBO)","Graphic rating scale","Assessment center method"],correct:2,topic:3},
+{q:"The primary purpose of performance appraisal in an organization is to:",opts:["Only determine salary increments","Provide feedback, support career development, and identify strengths/weaknesses","Create competition among employees","Document employee behavior for legal purposes only"],correct:1,topic:3},
+{q:"Which performance management concept emphasizes aligning individual goals with organizational objectives?",opts:["Arbitrary goal setting","MBO (Management by Objectives)","Unstructured performance review","Annual ranking system"],correct:1,topic:3},
+{q:"Performance improvement plans are most effective when they:",opts:["Focus exclusively on punishing poor performers","Are developed collaboratively and include training and support","Are imposed without employee input","Set impossible goals to motivate employees"],correct:1,topic:3},
+{q:"Which of the following is a key benefit of continuous feedback over annual reviews?",opts:["Continuous feedback requires less manager effort","It enables timely course correction and ongoing development","Annual reviews are more comprehensive and accurate","Continuous feedback eliminates the need for formal appraisals"],correct:1,topic:3},
+{q:"Employee motivation strategies in performance management typically include:",opts:["Only financial incentives","A combination of rewards, recognition, career development, and supportive culture","Threats of termination for underperformance","Mandatory overtime requirements"],correct:1,topic:3},
+{q:"Which of the following best explains why performance management is important for organizational success?",opts:["It only benefits the HR department","It improves efficiency, ensures accountability, and aligns employees with goals","It eliminates the need for training programs","It is required by labor laws and regulations only"],correct:1,topic:3},
+// COMPENSATION (Topic 4)
+{q:"The fundamental difference between fixed pay and variable pay is:",opts:["Fixed pay is salary; variable pay includes incentives tied to performance","Fixed pay changes monthly; variable pay remains constant","There is no meaningful difference","Variable pay is mandated by law; fixed pay is optional"],correct:0,topic:4},
+{q:"Job evaluation as a compensation tool primarily helps organizations to:",opts:["Determine which employees to terminate","Establish the relative value of jobs and ensure fair salary structures","Calculate annual bonuses for executives only","Evaluate employee personality traits"],correct:1,topic:4},
+{q:"Pay equity legislation aims to ensure:",opts:["All employees receive identical compensation regardless of role","Equal pay for equal work without discrimination based on gender or other factors","Higher pay for senior employees exclusively","Pay scales are determined by market forces only"],correct:1,topic:4},
+{q:"Which of the following is typically included in a comprehensive salary structure?",opts:["Only the basic salary","Basic salary, HRA, and various allowances","Only variable incentives and bonuses","Perquisites and stock options exclusively"],correct:1,topic:4},
+{q:"The primary distinction between a bonus and an incentive is:",opts:["A bonus is an additional payment often given annually; incentives are performance-linked rewards","Bonuses are always larger than incentives","Incentives are mandatory while bonuses are discretionary","There is no practical difference between them"],correct:0,topic:4},
+{q:"Employee benefits such as insurance and leave policies serve which strategic purpose?",opts:["They are legally mandated and provide no strategic value","They improve welfare, increase satisfaction, and support retention","They are primarily used to reduce taxable income only","They replace the need for competitive salaries"],correct:1,topic:4},
+{q:"Compensation policies in an organization are designed to:",opts:["Create confusion about pay practices","Ensure consistency, fairness, and alignment with organizational goals","Maximize costs regardless of market conditions","Favor only senior management"],correct:1,topic:4},
+{q:"Which of the following best describes the concept of 'total compensation'?",opts:["Only the monthly salary received by an employee","The combination of salary, incentives, benefits, and non-monetary rewards","Only variable pay and bonuses","The cost of employee benefits alone"],correct:1,topic:4},
+{q:"Wage and salary administration ensures:",opts:["That all employees receive equal pay regardless of position","Fair payment, legal compliance, consistency, and employee trust","That compensation is never revised or updated","That only external market rates are considered"],correct:1,topic:4},
+{q:"A well-designed compensation management system directly impacts:",opts:["Only employee satisfaction","Employee motivation, retention, performance, and talent attraction","Only the organization's profit margins","Only compliance with tax regulations"],correct:1,topic:4},
+{q:"Which compensation component is most directly tied to organizational performance metrics?",opts:["Basic salary","Variable pay and performance incentives","House rent allowance","Medical insurance benefits"],correct:1,topic:4},
+{q:"Non-monetary rewards in a compensation system include:",opts:["Cash bonuses and salary advances","Recognition programs, career development opportunities, and flexible work arrangements","Only stock options and equity","Overtime payments and hazard pay"],correct:1,topic:4},
+{q:"The primary objective of establishing transparency in salary structures is to:",opts:["Create competition among employees","Build employee trust, reduce conflicts, and ensure fairness","Make all salary information public to competitors","Eliminate the need for HR involvement in compensation"],correct:1,topic:4},
+{q:"Which of the following is a key challenge in compensation management?",opts:["Making compensation too simple and transparent","Balancing internal equity with external market competitiveness","Eliminating all variable pay components","Paying all employees the same rate"],correct:1,topic:4},
+{q:"Job evaluation supports compensation design by:",opts:["Comparing job values across the organization to establish equitable pay differentials","Ranking employees by performance alone","Determining which departments to eliminate","Setting maximum salary caps for all positions"],correct:0,topic:4},
+// INDUSTRIAL RELATIONS (Topic 5)
+{q:"Industrial Relations as a field primarily concerns:",opts:["The relationship between an organization and its customers","The dynamic relationship between employers, employees, and trade unions","Only the legal compliance aspects of employment","The organization's relationship with government agencies"],correct:1,topic:5},
+{q:"The primary function of trade unions in the workplace is to:",opts:["Replace the HR department in managing employees","Protect employee rights, improve conditions, and negotiate collectively","Ensure all employees join the same political party","Manage the organization's production schedules"],correct:1,topic:5},
+{q:"Collective bargaining is best described as:",opts:["A unilateral decision by management on employment terms","A negotiation process between employer and employee representatives to reach agreements","An informal discussion between coworkers about salaries","A legal proceeding in labor court"],correct:1,topic:5},
+{q:"Which of the following is the most common cause of industrial disputes?",opts:["Excessive employee benefits","Disagreements over wages, working conditions, and management policies","Employee satisfaction with current conditions","Government intervention in private business"],correct:1,topic:5},
+{q:"Effective conflict management in the workplace requires:",opts:["Avoiding all confrontation and hoping issues resolve themselves","Open communication, mediation, and fair resolution processes","Immediate termination of all parties involved","External legal action for every dispute"],correct:1,topic:5},
+{q:"A grievance in the workplace context refers to:",opts:["A formal legal complaint filed in court","An employee complaint that needs to be addressed through proper channels","A management decision about employee benefits","An annual performance review comment"],correct:1,topic:5},
+{q:"The purpose of discipline management in an organization is to:",opts:["Punish employees for any minor infraction","Ensure rule-following, maintain order, and improve behavior and efficiency","Create a culture of fear among employees","Eliminate the need for supervision"],correct:1,topic:5},
+{q:"Labor laws serve which critical function in employment relations?",opts:["They only protect employers from lawsuits","They regulate employment, protect rights, ensure fair treatment, and define working conditions","They mandate that all employees join trade unions","They eliminate the need for HR departments"],correct:1,topic:5},
+{q:"Which of the following is NOT a typical employee welfare measure?",opts:["Health facilities and safety measures","Recreational facilities and counseling services","Mandatory unpaid overtime requirements","Insurance and retirement benefits"],correct:2,topic:5},
+{q:"Good industrial relations contribute to organizational success by:",opts:["Eliminating the need for HR management","Improving communication, reducing disputes, and increasing productivity","Ensuring trade unions control all management decisions","Preventing any employee from leaving the organization"],correct:1,topic:5},
+{q:"The key difference between mediation and arbitration in dispute resolution is:",opts:["Mediation involves a neutral third party facilitating discussion; arbitration involves a binding decision by a third party","Mediation is always binding; arbitration is voluntary","There is no difference between them","Mediation is for individuals; arbitration is for groups only"],correct:0,topic:5},
+{q:"Which of the following best describes the role of HR in industrial relations?",opts:["HR has no role in industrial relations","HR manages relationships, supports bargaining, handles grievances, and ensures compliance","HR only represents management interests against employees","HR delegates all IR responsibilities to external lawyers"],correct:1,topic:5},
+{q:"A strike is typically a manifestation of:",opts:["Employee satisfaction with workplace conditions","An unresolved industrial dispute where employees cease work as a protest","A management strategy to reduce workforce","A government-mandated work stoppage"],correct:1,topic:5},
+{q:"Proper grievance handling procedures benefit organizations by:",opts:["Eliminating all employee complaints permanently","Improving satisfaction, trust, and reducing escalation of conflicts","Proving that management is always right","Delaying resolution until employees forget their complaints"],correct:1,topic:5},
+{q:"Which factor most significantly influences the quality of industrial relations in an organization?",opts:["The physical location of the workplace","Effective communication, mutual respect, and fair policies between management and employees","The number of trade unions present","The size of the organization's HR department"],correct:1,topic:5},
+// HR AUDIT & FUTURE (Topic 6)
+{q:"An HR audit is best described as:",opts:["A financial audit of the HR department's budget","A comprehensive evaluation of HR policies, practices, and their effectiveness","An annual employee satisfaction survey","A review of only recruitment activities"],correct:1,topic:6},
+{q:"Which of the following is a primary objective of conducting an HR audit?",opts:["To find reasons to terminate HR staff","To evaluate HR performance, ensure legal compliance, and identify gaps","To reduce the HR department's headcount","To compare HR costs with competitors only"],correct:1,topic:6},
+{q:"The HR audit process typically follows which sequence?",opts:["Data collection, evaluation, planning, recommendations","Planning, data collection, analysis/evaluation, recommendations","Recommendations, planning, evaluation, data collection","Evaluation, recommendations, planning, data collection"],correct:1,topic:6},
+{q:"HR metrics and analytics are primarily used for:",opts:["Replacing human decision-making entirely","Measuring HR performance and supporting data-driven decisions","Monitoring employee social media activity","Eliminating the need for HR professionals"],correct:1,topic:6},
+{q:"Which emerging trend is most transforming the future of HRM?",opts:["Manual record-keeping and paper-based processes","AI, automation, and data-driven HR technologies","Reducing employee training budgets","Eliminating remote work options entirely"],correct:1,topic:6},
+{q:"The shift toward strategic HR roles means that HR professionals will increasingly:",opts:["Focus only on administrative and compliance tasks","Partner in organizational strategy and drive business success through talent management","Be replaced entirely by AI systems","Focus exclusively on payroll processing"],correct:1,topic:6},
+{q:"Which of the following is NOT a key trend shaping the future of HRM?",opts:["AI and automation in recruitment and performance management","Remote and flexible work arrangements","Eliminating employee experience initiatives","Data-driven and analytics-based decision making"],correct:2,topic:6},
+{q:"HR analytics differs from traditional HR reporting in that:",opts:["Analytics only presents historical data; reporting predicts future trends","Analytics involves deeper data analysis for predictive insights; reporting shows what happened","There is no difference between them","Reporting is more advanced than analytics"],correct:1,topic:6},
+{q:"Which HR metric would be most useful for assessing employee retention effectiveness?",opts:["Cost per hire","Employee turnover rate","Training hours per employee","Number of job postings"],correct:1,topic:6},
+{q:"The concept of 'employee experience' in modern HRM emphasizes:",opts:["Only physical workplace conditions","The holistic journey and satisfaction of employees throughout their organizational lifecycle","Only compensation and benefits packages","The number of hours employees work per week"],correct:1,topic:6},
+{q:"Which of the following best describes why HR audits should be conducted periodically?",opts:["To comply with a one-time regulatory requirement","To continuously improve HR practices, ensure compliance, and adapt to changes","To justify eliminating the HR department","Because they are required annually by international law"],correct:1,topic:6},
+{q:"Digital HR transformation involves:",opts:["Only digitizing existing paper forms without process improvement","Leveraging technology to streamline HR processes, enhance employee experience, and enable strategic decisions","Replacing all HR staff with chatbots","Eliminating face-to-face communication in HR"],correct:1,topic:6},
+{q:"Continuous learning as a future HR trend suggests that organizations should:",opts:["Conduct training only during employee onboarding","Foster ongoing skill development and learning culture throughout employee tenure","Eliminate formal training programs entirely","Rely exclusively on external hiring for new skills"],correct:1,topic:6},
+{q:"Which of the following represents a key challenge in implementing HR analytics?",opts:["Having too much high-quality data available","Data quality issues, privacy concerns, and lack of analytical skills in HR teams","Employees being too enthusiastic about data collection","Analytics tools being too simple and basic"],correct:1,topic:6},
+{q:"The strategic importance of HR audit findings lies in their ability to:",opts:["Create more paperwork for the HR department","Inform decision-making, improve HR strategy, and promote continuous improvement","Prove that the HR department is unnecessary","Replace the need for employee feedback"],correct:1,topic:6}
+];
+
+// ==================== FINAL EXAM SUGGESTIONS DATA ====================
+const EXAM_SUGGESTIONS = [
+{q:"What is recruitment?",a:"Recruitment is the process of identifying, attracting, and hiring suitable candidates for job vacancies in an organization."},
+{q:"Why is recruitment important for an organization?",a:"Recruitment helps organizations hire the right people, improve performance, and achieve business goals effectively."},
+{q:"What are the main activities involved in recruitment?",a:"The main activities include sourcing candidates, screening applications, and selecting suitable candidates."},
+{q:"What is meant by 'Right Person for the Right Job'?",a:"It means selecting a candidate whose skills and qualifications match the job requirements."},
+{q:"What are the two main types of recruitment?",a:"The two main types are Internal Recruitment and External Recruitment."},
+{q:"What is internal recruitment?",a:"Internal recruitment is the process of filling job vacancies from within the organization through promotions, transfers, or internal postings."},
+{q:"What is external recruitment?",a:"External recruitment is the process of hiring candidates from outside the organization through job portals, agencies, advertisements, etc."},
+{q:"Mention two advantages of internal recruitment.",a:"Internal recruitment is faster and cost-effective, and it boosts employee morale by providing career growth opportunities."},
+{q:"Mention two advantages of external recruitment.",a:"External recruitment provides a wider talent pool and brings fresh perspectives and new ideas into the organization."},
+{q:"What is recruitment planning?",a:"Recruitment planning is the process of identifying hiring needs and developing strategies to fill job vacancies efficiently."},
+{q:"Why is recruitment planning important?",a:"Recruitment planning ensures a structured process, reduces hiring errors and delays, and improves the quality of hires."},
+{q:"What is job analysis?",a:"Job analysis is the process of studying and documenting job roles, responsibilities, tasks, and required skills."},
+{q:"What are the outcomes of job analysis?",a:"The outcomes are Job Description (JD) and Job Specification (JS)."},
+{q:"What is a job description?",a:"A job description is a document that defines the duties, responsibilities, and reporting structure of a job."},
+{q:"What is a job specification?",a:"A job specification defines the qualifications, skills, experience, and attributes required for a job."},
+{q:"What is the difference between JD and JS?",a:"JD focuses on the job (duties and responsibilities), while JS focuses on the candidate (required skills and qualifications)."},
+{q:"What are the sources of recruitment?",a:"Sources include internal sources (promotion, transfer) and external sources (job portals, agencies, referrals)."},
+{q:"What are recruitment channels?",a:"Recruitment channels are platforms used to reach candidates, such as job portals, social media, and job fairs."},
+{q:"What is screening?",a:"Screening is the process of filtering and shortlisting suitable candidates from the pool of applicants."},
+{q:"Why is screening important?",a:"Screening saves time and effort by removing unsuitable candidates and improving interview quality."},
+{q:"What is an interview?",a:"An interview is a face-to-face evaluation process to assess a candidate's skills, attitude, and suitability for the job."},
+{q:"What are the types of interviews?",a:"Types include structured, unstructured, behavioral, and technical interviews."},
+{q:"What is a structured interview?",a:"A structured interview uses predetermined questions and a standardized evaluation criteria."},
+{q:"What is selection?",a:"Selection is the process of choosing the best candidate from the shortlisted applicants for the job."},
+{q:"What is an offer letter?",a:"An offer letter is a formal document issued to the selected candidate containing salary, role, and terms of employment."},
+{q:"What are post-selection activities?",a:"Post-selection activities include background verification, document verification, compliance checks, and record maintenance."},
+{q:"What are selection techniques?",a:"Selection techniques are methods used to evaluate and choose the best candidate, including tests, interviews, and GD."},
+{q:"What are the types of selection tests?",a:"Types include aptitude tests, personality tests, intelligence tests, and trade/skill tests."},
+{q:"What is an aptitude test?",a:"An aptitude test measures a candidate's ability, logical reasoning, and numerical skills."},
+{q:"What is a personality test?",a:"A personality test assesses behavioral traits, attitude, and cultural fit of a candidate."},
+{q:"What is group discussion (GD)?",a:"GD is a selection method where candidates discuss a topic, evaluating communication, teamwork, and leadership skills."},
+{q:"What are interview techniques?",a:"Interview techniques include structured, unstructured, behavioral, and technical approaches to candidate evaluation."},
+{q:"What is the final selection decision?",a:"It is the decision made by HR and managers to hire the best candidate based on all evaluation results."},
+{q:"What are selection errors?",a:"Selection errors are mistakes in hiring, such as bias or poor evaluation, leading to wrong hiring decisions."},
+{q:"How can selection errors be reduced?",a:"Selection errors can be reduced through structured processes, proper training, and objective evaluation methods."},
+{q:"What is training?",a:"Training is the process of improving employee skills and knowledge for better job performance."},
+{q:"Why is training important?",a:"Training improves performance, increases productivity, reduces errors, and supports organizational growth."},
+{q:"What are the types of training?",a:"Types include on-the-job training and off-the-job training."},
+{q:"What is on-the-job training?",a:"On-the-job training occurs at the workplace and includes methods like job rotation, mentoring, and coaching."},
+{q:"What is off-the-job training?",a:"Off-the-job training occurs outside the workplace and includes workshops, seminars, and classroom lectures."},
+{q:"What is training needs assessment?",a:"It is the process of identifying skill gaps and determining training requirements for employees."},
+{q:"What are training methods?",a:"Training methods include lectures, case studies, role playing, simulations, e-learning, and blended learning."},
+{q:"What is training design?",a:"Training design is planning training programs by defining objectives, content, methods, and materials."},
+{q:"What is training implementation?",a:"Training implementation is the execution of training programs involving trainers, participants, and coordination."},
+{q:"What is training evaluation?",a:"Training evaluation measures the effectiveness of training programs and their impact on performance."},
+{q:"What is performance management?",a:"Performance management is the process of evaluating and improving employee performance to meet organizational goals."},
+{q:"What is performance appraisal?",a:"Performance appraisal is the periodic evaluation of employee performance to identify strengths and weaknesses."},
+{q:"What are the methods of performance appraisal?",a:"Methods include rating scales, 360-degree feedback, MBO, BARS, and assessment centers."},
+{q:"What is 360-degree feedback?",a:"360-degree feedback collects performance feedback from multiple sources: peers, managers, subordinates, and self."},
+{q:"What are performance standards?",a:"Performance standards define the expected levels of performance that guide employee behavior and evaluation."},
+{q:"What is performance feedback?",a:"Performance feedback is information provided to employees about their performance to support improvement."},
+{q:"What is performance improvement?",a:"Performance improvement focuses on enhancing employee performance through training, support, and development plans."},
+{q:"What is employee motivation?",a:"Motivation encourages employees to perform better through rewards, recognition, and supportive strategies."},
+{q:"What are rewards and incentives?",a:"Rewards recognize performance; incentives motivate employees. Both can be monetary or non-monetary."},
+{q:"What is compensation management?",a:"Compensation management deals with managing employee salary, benefits, and incentives to ensure fair payment."},
+{q:"What are the components of compensation?",a:"Components include fixed pay (salary) and variable pay (incentives), plus benefits like insurance and leave."},
+{q:"What is salary structure?",a:"Salary structure defines pay components including basic salary, HRA, and allowances with transparency."},
+{q:"What are incentives and bonus?",a:"Incentives are performance-linked rewards; bonus is additional payment given for achievements or festivals."},
+{q:"What are employee benefits?",a:"Employee benefits include insurance, leave, welfare facilities, and perks beyond regular salary."},
+{q:"What is wage and salary administration?",a:"It is the process of managing wages and salaries ensuring fair payment, legal compliance, and consistency."},
+{q:"What is job evaluation?",a:"Job evaluation determines the relative value of jobs within an organization to set fair salary structures."},
+{q:"What is pay equity?",a:"Pay equity ensures equal pay for equal work without discrimination based on gender, race, or other factors."},
+{q:"What are compensation policies?",a:"Compensation policies are guidelines that ensure consistency, fairness, and alignment with organizational goals."},
+{q:"What is Industrial Relations (IR)?",a:"IR refers to the relationship between employers and employees, including unions and management interactions."},
+{q:"What are trade unions?",a:"Trade unions are worker organizations that protect employee rights, improve conditions, and negotiate collectively."},
+{q:"What is collective bargaining?",a:"Collective bargaining is the negotiation process between employer and employee representatives to reach agreements."},
+{q:"What are industrial disputes?",a:"Industrial disputes are conflicts between employer and employees over wages, conditions, or policies."},
+{q:"What is conflict management?",a:"Conflict management resolves workplace issues through communication, mediation, and fair processes."},
+{q:"What is grievance handling?",a:"Grievance handling is the process of addressing and resolving employee complaints through proper channels."},
+{q:"What is discipline management?",a:"Discipline management ensures rule-following, maintains order, and addresses misconduct in the workplace."},
+{q:"What are labor laws?",a:"Labor laws regulate employment, protect employee rights, ensure fair treatment, and define working conditions."},
+{q:"What is employee welfare?",a:"Employee welfare focuses on employee well-being through facilities, benefits, and supportive measures."},
+{q:"Why is industrial relations important?",a:"Good IR improves communication, reduces disputes, increases productivity, and ensures organizational success."},
+{q:"What is HR audit?",a:"HR audit is the evaluation of HR policies and practices to check effectiveness and ensure compliance."},
+{q:"What are the objectives of HR audit?",a:"Objectives include evaluating HR performance, ensuring compliance, identifying gaps, and improving efficiency."},
+{q:"What is the HR audit process?",a:"The process includes planning, data collection, analysis, evaluation, and providing recommendations."},
+{q:"What are HR metrics?",a:"HR metrics are measures of HR performance such as turnover rate, productivity, and training effectiveness."},
+{q:"What is HR analytics?",a:"HR analytics uses data analysis to support decision-making and improve HR strategy and performance."},
+{q:"What are emerging trends in HRM?",a:"Trends include AI and automation, remote work, digital HR, employee experience focus, and HR analytics."},
+{q:"What is the future of HRM?",a:"The future of HRM is technology-driven with AI playing a major role, strategic HR, and focus on employee experience."}
+];
+
+// ==================== FUNCTIONS ====================
+let showAllAnswers = false;
+let currentMcqTopic = 'all';
+let testState = null;
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id+'-section').classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== RENDER NOTES =====
+function renderNotes() {
+  const container = document.getElementById('notes-container');
+  let html = '';
+  TOPICS.forEach((topic, tIdx) => {
+    const colorVar = `var(--topic${tIdx+1})`;
+    html += `<div class="topic-group fade-in">
+      <div class="topic-header" style="background:rgba(${getRgbVals(tIdx)},0.08);border-color:rgba(${getRgbVals(tIdx)},0.2)" onclick="toggleTopic(this)" data-topic="${topic.id}">
+        <div class="icon" style="background:${colorVar}">${topic.icon}</div>
+        <h2 style="color:${colorVar}">Classes ${topic.classes[0]}-${topic.classes[1]}: ${topic.name}</h2>
+        <span class="arrow">▶</span>
+      </div>
+      <div class="topic-content" id="tc-${topic.id}">`;
+    
+    // Add Final Exam suggestions for this topic
+    const topicStart = topic.classes[0];
+    const topicEnd = topic.classes[1];
+    const relevantSuggestions = EXAM_SUGGESTIONS.filter((s,i) => {
+      const suggestionIdx = i + 1;
+      if(tIdx === 0) return suggestionIdx >= 1 && suggestionIdx <= 35;
+      if(tIdx === 1) return suggestionIdx >= 27 && suggestionIdx <= 35;
+      if(tIdx === 2) return suggestionIdx >= 36 && suggestionIdx <= 45;
+      if(tIdx === 3) return suggestionIdx >= 46 && suggestionIdx <= 53;
+      if(tIdx === 4) return suggestionIdx >= 54 && suggestionIdx <= 62;
+      if(tIdx === 5) return suggestionIdx >= 63 && suggestionIdx <= 69;
+      if(tIdx === 6) return suggestionIdx >= 70 && suggestionIdx <= 76;
+      return false;
+    });
+    
+    if(relevantSuggestions.length > 0) {
+      html += `<div class="highlight-box" style="border-color:rgba(${getRgbVals(tIdx)},0.3);background:rgba(${getRgbVals(tIdx)},0.06)">
+        <div class="hl-title" style="color:${colorVar}">⭐ FINAL EXAM KEY SUGGESTIONS</div>`;
+      relevantSuggestions.forEach(s => {
+        html += `<p style="margin-bottom:0.5rem"><strong style="color:${colorVar}">Q: ${s.q}</strong><br><span style="color:var(--text-primary)">${s.a}</span></p>`;
+      });
+      html += `</div>`;
+    }
+    
+    for(let c = topic.classes[0]; c <= topic.classes[1]; c++) {
+      const cls = CLASS_DATA[c];
+      if(!cls) continue;
+      html += `<div class="class-card" style="border-left-color:${colorVar}">
+        <h3><span class="badge" style="background:${colorVar}">Class ${c}</span> ${cls.title}</h3>`;
+      cls.notes.forEach(n => {
+        html += `<div class="note-point" style="color:var(--text-secondary)"><span style="color:${colorVar};position:absolute;left:0;top:0.65rem;font-size:1.2rem">●</span>${n}</div>`;
+      });
+      if(cls.faqs && cls.faqs.length) {
+        html += `<div class="faq-section">`;
+        cls.faqs.forEach(f => {
+          html += `<div class="faq-item"><div class="faq-q">Q: ${f.q}</div><div class="faq-a">A: ${f.a}</div></div>`;
+        });
+        html += `</div>`;
+      }
+      html += `</div>`;
+    }
+    html += `</div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function getRgbVals(tIdx) {
+  const colors = ['99,102,241','139,92,246','236,72,153','245,158,11','16,185,129','59,130,246','6,182,212'];
+  return colors[tIdx] || '99,102,241';
+}
+
+function toggleTopic(el) {
+  const content = el.nextElementSibling;
+  el.classList.toggle('open');
+  content.classList.toggle('show');
+}
+
+// ===== RENDER MCQ =====
+function renderMcq() {
+  // Tabs
+  const tabsContainer = document.getElementById('mcqTabs');
+  let tabsHtml = `<div class="mcq-tab active" onclick="filterMcq('all',this)">All Topics</div>`;
+  TOPICS.forEach((t,i) => {
+    const count = MCQ_DATA.filter(m => m.topic === i).length;
+    tabsHtml += `<div class="mcq-tab" onclick="filterMcq(${i},this)">${t.icon} ${t.name} (${count})</div>`;
+  });
+  tabsContainer.innerHTML = tabsHtml;
+  renderMcqCards('all');
+}
+
+function filterMcq(topicIdx, el) {
+  document.querySelectorAll('.mcq-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentMcqTopic = topicIdx;
+  renderMcqCards(topicIdx);
+}
+
+function renderMcqCards(topicIdx) {
+  const container = document.getElementById('mcq-container');
+  const questions = topicIdx === 'all' ? MCQ_DATA : MCQ_DATA.filter(m => m.topic === topicIdx);
+  document.getElementById('mcqCount').textContent = `${questions.length} Questions`;
+  const letters = ['A','B','C','D'];
+  let html = '';
+  questions.forEach((q, i) => {
+    const topicInfo = TOPICS[q.topic];
+    const colorVar = `var(--topic${q.topic+1})`;
+    html += `<div class="mcq-card fade-in" id="mcq-${i}">
+      <div class="mcq-q-text">
+        <span class="mcq-q-num" style="background:${colorVar}">Q${i+1}</span>
+        <span style="font-size:0.7rem;padding:0.1rem 0.5rem;border-radius:5px;background:rgba(${getRgbVals(q.topic)},0.15);color:${colorVar};margin-left:0.3rem">${topicInfo.name}</span>
+        ${q.q}
+      </div>
+      <div class="mcq-options" id="mcq-opts-${i}">`;
+    q.opts.forEach((opt, oi) => {
+      html += `<div class="mcq-opt" onclick="selectMcqOpt(${i},${oi})" id="mcq-opt-${i}-${oi}">
+        <div class="opt-letter">${letters[oi]}</div>
+        <span>${opt}</span>
+      </div>`;
+    });
+    html += `</div>
+      <button class="reveal-btn" onclick="revealAnswer(${i})">👁 Reveal Answer</button>
+      <div class="answer-reveal" id="mcq-ans-${i}">✅ Correct Answer: <span class="correct-label">${letters[q.correct]}. ${q.opts[q.correct]}</span></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+  if(showAllAnswers) applyShowAll(true);
+}
+
+function selectMcqOpt(qIdx, optIdx) {
+  const q = (currentMcqTopic === 'all' ? MCQ_DATA : MCQ_DATA.filter(m => m.topic === currentMcqTopic))[qIdx];
+  const opts = document.querySelectorAll(`#mcq-opts-${qIdx} .mcq-opt`);
+  opts.forEach((o, i) => {
+    o.classList.remove('correct','wrong');
+    if(i === q.correct) o.classList.add('correct');
+    else if(i === optIdx && optIdx !== q.correct) o.classList.add('wrong');
+  });
+}
+
+function revealAnswer(qIdx) {
+  document.getElementById(`mcq-ans-${qIdx}`).classList.add('show');
+  const q = (currentMcqTopic === 'all' ? MCQ_DATA : MCQ_DATA.filter(m => m.topic === currentMcqTopic))[qIdx];
+  const opts = document.querySelectorAll(`#mcq-opts-${qIdx} .mcq-opt`);
+  opts.forEach((o,i) => { if(i === q.correct) o.classList.add('correct'); });
+}
+
+function toggleShowAll() {
+  showAllAnswers = !showAllAnswers;
+  document.getElementById('showAllToggle').classList.toggle('on', showAllAnswers);
+  applyShowAll(showAllAnswers);
+}
+
+function applyShowAll(show) {
+  const questions = currentMcqTopic === 'all' ? MCQ_DATA : MCQ_DATA.filter(m => m.topic === currentMcqTopic);
+  questions.forEach((q,i) => {
+    const ansEl = document.getElementById(`mcq-ans-${i}`);
+    if(ansEl) {
+      if(show) ansEl.classList.add('show');
+      else ansEl.classList.remove('show');
+    }
+    const opts = document.querySelectorAll(`#mcq-opts-${i} .mcq-opt`);
+    opts.forEach((o,j) => {
+      if(show && j === q.correct) o.classList.add('correct');
+      else if(!show) o.classList.remove('correct');
+    });
+  });
+}
+
+// ===== TEST SYSTEM =====
+function renderTestSetup() {
+  const container = document.getElementById('testTopicChecks');
+  let html = `<div class="topic-check selected" onclick="toggleTestTopic(this, -1)" data-topic="-1">
+    <div class="check-icon"></div><span>Select All</span></div>`;
+  TOPICS.forEach((t,i) => {
+    const count = MCQ_DATA.filter(m => m.topic === i).length;
+    html += `<div class="topic-check" onclick="toggleTestTopic(this, ${i})" data-topic="${i}">
+      <div class="check-icon"></div><span>${t.icon} ${t.name} (${count})</span></div>`;
+  });
+  container.innerHTML = html;
+}
+
+let selectedTestTopics = new Set();
+function toggleTestTopic(el, idx) {
+  if(idx === -1) {
+    const wasSelected = el.classList.contains('selected');
+    document.querySelectorAll('.topic-check').forEach(tc => {
+      if(wasSelected) tc.classList.remove('selected');
+      else tc.classList.add('selected');
+    });
+    selectedTestTopics = wasSelected ? new Set() : new Set([-1,0,1,2,3,4,5,6]);
+  } else {
+    el.classList.toggle('selected');
+    if(el.classList.contains('selected')) selectedTestTopics.add(idx);
+    else selectedTestTopics.delete(idx);
+    // Update "Select All"
+    const allCheck = document.querySelector('.topic-check[data-topic="-1"]');
+    if(selectedTestTopics.size >= 7) allCheck.classList.add('selected');
+    else allCheck.classList.remove('selected');
+    if(!selectedTestTopics.has(-1) && selectedTestTopics.size === 7) selectedTestTopics.add(-1);
+    if(selectedTestTopics.has(-1) && selectedTestTopics.size < 8) selectedTestTopics.delete(-1);
+  }
+}
+
+function startTest() {
+  const topics = [...selectedTestTopics].filter(t => t >= 0);
+  if(topics.length === 0) { alert('Please select at least one topic!'); return; }
+  
+  const totalQ = parseInt(document.getElementById('testQCount').value) || 20;
+  const timeLimit = parseInt(document.getElementById('testTimeLimit').value) || 30;
+  
+  // Gather questions for selected topics
+  let pool = MCQ_DATA.filter(m => topics.includes(m.topic));
+  // Shuffle pool
+  pool = shuffleArray([...pool]);
+  
+  const questions = pool.slice(0, Math.min(totalQ, pool.length));
+  if(questions.length < totalQ) {
+    document.getElementById('testQCount').value = questions.length;
+  }
+  
+  testState = {
+    questions: questions.map(q => ({
+      ...q,
+      options: shuffleWithIndex([...q.opts], q.correct),
+      userAnswer: null,
+      answered: false,
+      skipped: false
+    })),
+    currentIndex: 0,
+    totalQuestions: questions.length,
+    timeLimit: timeLimit * 60,
+    timeRemaining: timeLimit * 60,
+    timer: null,
+    finished: false
+  };
+  
+  document.getElementById('testSetup').style.display = 'none';
+  document.getElementById('testArea').style.display = 'block';
+  document.getElementById('testResults').style.display = 'none';
+  
+  startTimer();
+  renderTestQuestion();
+}
+
+function shuffleArray(arr) {
+  for(let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function shuffleWithIndex(opts, correctIdx) {
+  const indexed = opts.map((o,i) => ({text:o, isCorrect:i===correctIdx}));
+  const shuffled = shuffleArray(indexed);
+  return shuffled.map((s,i) => ({...s, displayIdx:i}));
+}
+
+function startTimer() {
+  testState.timer = setInterval(() => {
+    testState.timeRemaining--;
+    updateTimerDisplay();
+    if(testState.timeRemaining <= 0) {
+      clearInterval(testState.timer);
+      finishTest();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const mins = Math.floor(testState.timeRemaining / 60);
+  const secs = testState.timeRemaining % 60;
+  const timerEl = document.getElementById('testTimer');
+  timerEl.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+  if(testState.timeRemaining < 60) timerEl.style.color = 'var(--accent-7)';
+  else if(testState.timeRemaining < 180) timerEl.style.color = 'var(--accent-4)';
+  else timerEl.style.color = 'var(--accent-5)';
+}
+
+function renderTestQuestion() {
+  const q = testState.questions[testState.currentIndex];
+  const container = document.getElementById('testQuestionContainer');
+  const letters = ['A','B','C','D'];
+  const topicInfo = TOPICS[q.topic];
+  const colorVar = `var(--topic${q.topic+1})`;
+  
+  let html = `<div class="test-question-card fade-in">
+    <div class="test-q-num" style="color:${colorVar}">Topic: ${topicInfo.name}</div>
+    <div class="test-q-text">Question ${testState.currentIndex+1} of ${testState.totalQuestions}<br>${q.q}</div>
+    <div class="test-options" id="test-opts">`;
+  
+  q.options.forEach((opt, i) => {
+    const isSelected = q.userAnswer === i;
+    const isDisabled = q.answered ? 'disabled' : '';
+    let extraClass = '';
+    if(q.answered) {
+      if(opt.isCorrect) extraClass = 'correct-answer';
+      else if(isSelected && !opt.isCorrect) extraClass = 'wrong-answer';
+    } else if(isSelected) extraClass = 'selected';
+    
+    html += `<div class="test-opt ${extraClass} ${isDisabled?'disabled':''}" onclick="selectTestOpt(${i})">
+      <div class="opt-letter">${letters[i]}</div>
+      <span>${opt.text}</span>
+    </div>`;
+  });
+  html += `</div>`;
+  
+  if(q.answered) {
+    const fb = document.getElementById('test-feedback');
+    let fbClass = '', fbText = '';
+    if(q.skipped) { fbClass = 'skip-fb'; fbText = '⏭ Question skipped'; }
+    else {
+      const selectedOpt = q.options[q.userAnswer];
+      if(selectedOpt && selectedOpt.isCorrect) { fbClass = 'correct-fb'; fbText = '✅ Correct! Well done!'; }
+      else { fbClass = 'wrong-fb'; fbText = `❌ Wrong! Correct answer: ${q.options.find(o=>o.isCorrect).text}`; }
+    }
+    html += `<div class="test-feedback ${fbClass}">${fbText}</div>`;
+  }
+  
+  html += `<div id="test-feedback"></div></div>`;
+  container.innerHTML = html;
+  
+  // Update progress
+  document.getElementById('testProgress').textContent = `Q ${testState.currentIndex+1}/${testState.totalQuestions}`;
+  document.getElementById('testProgressFill').style.width = `${((testState.currentIndex+1)/testState.totalQuestions)*100}%`;
+  
+  // Update nav buttons
+  document.getElementById('prevBtn').disabled = testState.currentIndex === 0;
+  const isLast = testState.currentIndex === testState.totalQuestions - 1;
+  const nextBtn = document.getElementById('nextBtn');
+  if(isLast) { nextBtn.textContent = '🏁 Finish Test'; nextBtn.onclick = finishTest; }
+  else { nextBtn.textContent = 'Next ➡'; nextBtn.onclick = nextQuestion; }
+}
+
+function selectTestOpt(optIdx) {
+  const q = testState.questions[testState.currentIndex];
+  if(q.answered) return;
+  
+  q.userAnswer = optIdx;
+  q.answered = true;
+  q.skipped = false;
+  renderTestQuestion();
+}
+
+function skipQuestion() {
+  const q = testState.questions[testState.currentIndex];
+  if(!q.answered) {
+    q.skipped = true;
+    q.answered = true;
+  }
+  if(testState.currentIndex < testState.totalQuestions - 1) nextQuestion();
+  else finishTest();
+}
+
+function nextQuestion() {
+  if(testState.currentIndex < testState.totalQuestions - 1) {
+    testState.currentIndex++;
+    renderTestQuestion();
+  }
+}
+
+function prevQuestion() {
+  if(testState.currentIndex > 0) {
+    testState.currentIndex--;
+    renderTestQuestion();
+  }
+}
+
+function finishTest() {
+  if(testState.timer) clearInterval(testState.timer);
+  testState.finished = true;
+  
+  document.getElementById('testArea').style.display = 'none';
+  document.getElementById('testResults').style.display = 'block';
+  
+  let correct = 0, wrong = 0, skipped = 0;
+  testState.questions.forEach(q => {
+    if(q.skipped) skipped++;
+    else if(q.userAnswer !== null && q.options[q.userAnswer] && q.options[q.userAnswer].isCorrect) correct++;
+    else if(q.userAnswer !== null) wrong++;
+    else skipped++;
+  });
+  
+  const total = testState.totalQuestions;
+  const pct = Math.round((correct/total)*100);
+  const scoreClass = pct >= 80 ? 'great' : pct >= 50 ? 'good' : 'poor';
+  const letters = ['A','B','C','D'];
+  
+  let html = `<div class="result-header fade-in">
+    <div style="color:var(--text-muted);font-size:0.9rem;margin-bottom:0.5rem">TEST COMPLETE</div>
+    <div class="result-score ${scoreClass}">${pct}%</div>
+    <div class="result-detail">${correct} out of ${total} correct &middot; Score: ${correct}/${total} marks</div>
+    <div class="result-breakdown">
+      <div class="breakdown-card"><div class="bd-num" style="color:var(--accent-5)">${correct}</div><div class="bd-label">Correct</div></div>
+      <div class="breakdown-card"><div class="bd-num" style="color:var(--accent-7)">${wrong}</div><div class="bd-label">Wrong</div></div>
+      <div class="breakdown-card"><div class="bd-num" style="color:var(--accent-4)">${skipped}</div><div class="bd-label">Skipped</div></div>
+    </div>
+  </div>
+  <h3 style="font-family:Poppins;margin:1.5rem 0 1rem;font-size:1.2rem">📋 Detailed Analysis</h3>`;
+  
+  testState.questions.forEach((q, i) => {
+    let status, statusClass, qClass;
+    if(q.skipped || q.userAnswer === null) { status = 'SKIPPED'; statusClass = 'skipped'; qClass = 'skipped-q'; }
+    else if(q.options[q.userAnswer] && q.options[q.userAnswer].isCorrect) { status = 'CORRECT'; statusClass = 'correct'; qClass = 'correct-q'; }
+    else { status = 'WRONG'; statusClass = 'wrong'; qClass = 'wrong-q'; }
+    
+    const correctOpt = q.options.find(o => o.isCorrect);
+    const userOpt = q.userAnswer !== null ? q.options[q.userAnswer] : null;
+    const topicInfo = TOPICS[q.topic];
+    
+    html += `<div class="result-question ${qClass} fade-in">
+      <div class="rq-header">
+        <span style="font-size:0.8rem;color:var(--text-muted)">Q${i+1} &middot; ${topicInfo.name}</span>
+        <span class="rq-status ${statusClass}">${status}</span>
+      </div>
+      <div class="rq-text">${q.q}</div>`;
+    if(userOpt && !userOpt.isCorrect) {
+      html += `<div class="rq-your-ans" style="color:var(--accent-7)">Your answer: ${userOpt.text}</div>`;
+    }
+    if(status !== 'CORRECT') {
+      html += `<div class="rq-correct-ans">Correct answer: ${correctOpt.text}</div>`;
+    }
+    html += `</div>`;
+  });
+  
+  html += `<button class="retry-btn" onclick="resetTest()">🔄 Take Another Test</button>`;
+  document.getElementById('testResults').innerHTML = html;
+}
+
+function resetTest() {
+  testState = null;
+  selectedTestTopics = new Set();
+  document.getElementById('testSetup').style.display = 'block';
+  document.getElementById('testArea').style.display = 'none';
+  document.getElementById('testResults').style.display = 'none';
+  renderTestSetup();
+}
+
+// ===== INIT =====
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('backTop');
+  if(window.scrollY > 300) btn.style.display = 'flex';
+  else btn.style.display = 'none';
+});
+
+renderNotes();
+renderMcq();
+renderTestSetup();
+</script>
+</body>
+</html>
