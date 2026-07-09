@@ -401,6 +401,67 @@ body {
   box-shadow: 0 4px 15px rgba(99,102,241,0.3); transition: all 0.3s;
 }
 .back-top:hover { transform:translateY(-3px); }
+
+/* ===== Notes Search Bar ===== */
+.notes-search-wrap {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--bg, #f8fafc);
+  padding: 14px 1.5rem 12px;
+  border-bottom: 1px solid var(--border, #e2e8f0);
+  box-shadow: 0 2px 10px rgba(15,23,42,0.04);
+}
+.notes-search-box {
+  position: relative; max-width: 900px; margin: 0 auto;
+}
+.notes-search-box input {
+  width: 100%;
+  padding: 13px 44px 13px 46px;
+  font-size: 15px;
+  font-family: inherit;
+  border: 2px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  outline: none;
+  background: #fff;
+  color: var(--text-primary, #0f172a);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.notes-search-box input:focus {
+  border-color: var(--topic1, #6366f1);
+  box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
+}
+.nsb-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 18px; color: var(--text-secondary, #64748b); pointer-events: none;
+}
+.nsb-clear {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  border: none; background: var(--border, #e2e8f0); color: var(--text-primary, #0f172a);
+  width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
+  font-size: 16px; line-height: 1; padding: 0; display: none;
+}
+.nsb-clear:hover { background: #cbd5e1; }
+.notes-search-meta {
+  max-width: 900px; margin: 8px auto 0;
+  font-size: 13px; color: var(--text-secondary, #64748b);
+  text-align: right;
+}
+.notes-search-meta b { color: var(--topic1, #6366f1); }
+mark.ns-hi {
+  background: #fde047; color: #0f172a;
+  padding: 1px 2px; border-radius: 3px; font-weight: 700;
+}
+.topic-group.ns-hidden,
+.class-card.ns-hidden,
+.note-point.ns-hidden,
+.faq-item.ns-hidden,
+.highlight-box.ns-hidden { display: none !important; }
+.class-card.ns-match { box-shadow: 0 0 0 2px rgba(99,102,241,0.35); }
+.ns-no-results {
+  display: none; text-align: center; padding: 60px 20px;
+  color: var(--text-secondary, #64748b); font-size: 16px;
+}
+.ns-no-results.show { display: block; }
+.ns-no-results .big { font-size: 40px; margin-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -429,6 +490,14 @@ body {
 
 <!-- ==================== NOTES SECTION ==================== -->
 <div class="section active" id="notes-section">
+  <div class="notes-search-wrap">
+    <div class="notes-search-box">
+      <span class="nsb-icon">🔍</span>
+      <input id="notesSearch" type="text" placeholder="Search notes, questions, answers, FAQs, exam suggestions…" autocomplete="off" />
+      <button class="nsb-clear" id="notesSearchClear" type="button" aria-label="Clear search">×</button>
+    </div>
+    <div class="notes-search-meta" id="notesSearchMeta">Showing all notes</div>
+  </div>
   <div id="notes-container"></div>
 </div>
 
@@ -1112,6 +1181,172 @@ window.addEventListener('scroll', () => {
 renderNotes();
 renderMcq();
 renderTestSetup();
+
+// ===== NOTES: AUTO-EXPAND ALL TOPICS + SEARCH =====
+(function() {
+  // Auto-expand every topic so all notes are visible continuously (no collapse)
+  document.querySelectorAll('#notes-container .topic-header').forEach(h => h.classList.add('open'));
+  document.querySelectorAll('#notes-container .topic-content').forEach(c => c.classList.add('show'));
+
+  // Inject a "no results" placeholder inside notes-container
+  const notesContainer = document.getElementById('notes-container');
+  const noResults = document.createElement('div');
+  noResults.className = 'ns-no-results';
+  noResults.id = 'notesNoResults';
+  noResults.innerHTML = '<div class="big">🔍</div><div>No matching notes found. Try a different keyword.</div>';
+  notesContainer.appendChild(noResults);
+
+  const input = document.getElementById('notesSearch');
+  const clearBtn = document.getElementById('notesSearchClear');
+  const meta = document.getElementById('notesSearchMeta');
+
+  function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  // Cache original HTML of every searchable element so we can reset highlights cleanly
+  const originals = new WeakMap();
+  function cacheOriginals() {
+    document.querySelectorAll('#notes-container .note-point, #notes-container .faq-item, #notes-container .highlight-box p, #notes-container .class-card h3').forEach(el => {
+      if (!originals.has(el)) originals.set(el, el.innerHTML);
+    });
+  }
+  cacheOriginals();
+
+  function resetHighlight(el) {
+    if (originals.has(el)) el.innerHTML = originals.get(el);
+  }
+
+  function highlight(el, query) {
+    if (!query) return;
+    const re = new RegExp('(' + escapeRegExp(query) + ')', 'gi');
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    const textNodes = [];
+    let n;
+    while ((n = walker.nextNode())) {
+      if (n.parentElement && /^(SCRIPT|STYLE)$/.test(n.parentElement.tagName)) continue;
+      if (n.nodeValue.trim()) textNodes.push(n);
+    }
+    textNodes.forEach(node => {
+      if (re.test(node.nodeValue)) {
+        const span = document.createElement('span');
+        span.innerHTML = node.nodeValue.replace(new RegExp('(' + escapeRegExp(query) + ')', 'gi'), '<mark class="ns-hi">$1</mark>');
+        node.parentNode.replaceChild(span, node);
+      }
+    });
+  }
+
+  function applyFilter() {
+    cacheOriginals();
+    const raw = input.value.trim();
+    const q = raw.toLowerCase();
+    const re = q ? new RegExp(escapeRegExp(q), 'i') : null;
+
+    let totalMatches = 0;
+
+    // Reset all ns-hidden / ns-match classes and clear highlights
+    document.querySelectorAll('#notes-container .class-card, #notes-container .note-point, #notes-container .faq-item, #notes-container .highlight-box, #notes-container .topic-group').forEach(el => {
+      el.classList.remove('ns-hidden', 'ns-match');
+    });
+    document.querySelectorAll('#notes-container .note-point, #notes-container .faq-item, #notes-container .highlight-box p, #notes-container .class-card h3').forEach(el => {
+      resetHighlight(el);
+    });
+
+    if (!q) {
+      meta.innerHTML = 'Showing all notes';
+      clearBtn.style.display = 'none';
+      noResults.classList.remove('show');
+      return;
+    }
+
+    clearBtn.style.display = 'block';
+
+    // Iterate class-cards; hide those with no matching content
+    document.querySelectorAll('#notes-container .class-card').forEach(card => {
+      // Search inside: title, note-points, faq-items, highlight-box (exam suggestions)
+      const cardText = card.innerText.toLowerCase();
+      const cardMatches = re.test(cardText);
+
+      // Sub-filter: hide individual note-points and faq-items that don't match
+      let subMatchCount = 0;
+      card.querySelectorAll('.note-point, .faq-item').forEach(sub => {
+        const subText = sub.innerText.toLowerCase();
+        const matches = re.test(subText);
+        sub.classList.toggle('ns-hidden', !matches);
+        if (matches) {
+          highlight(sub, q);
+          subMatchCount++;
+        }
+      });
+
+      // Highlight matching exam-suggestion paragraphs in the highlight-box
+      let examMatchCount = 0;
+      const highlightBox = card.parentElement.querySelector('.highlight-box');
+      // The highlight-box is a sibling before the class-card; handled at topic-group level below
+      card.querySelectorAll('.highlight-box p').forEach(p => {
+        const matches = re.test(p.innerText.toLowerCase());
+        if (matches) {
+          highlight(p, q);
+          examMatchCount++;
+        }
+      });
+
+      const show = cardMatches;
+      card.classList.toggle('ns-hidden', !show);
+      if (show) {
+        card.classList.add('ns-match');
+        totalMatches += subMatchCount;
+      }
+    });
+
+    // Highlight exam suggestions in standalone highlight-boxes (per-topic)
+    document.querySelectorAll('#notes-container .highlight-box').forEach(hb => {
+      const hbText = hb.innerText.toLowerCase();
+      const matches = re.test(hbText);
+      hb.classList.toggle('ns-hidden', !matches);
+      if (matches) {
+        let pMatch = 0;
+        hb.querySelectorAll('p').forEach(p => {
+          const pm = re.test(p.innerText.toLowerCase());
+          if (pm) {
+            highlight(p, q);
+            pMatch++;
+          } else {
+            // hide non-matching suggestions inside a matching box? Keep them visible for context.
+          }
+        });
+        totalMatches += pMatch;
+      }
+    });
+
+    // Hide entire topic-group if no visible class-cards or highlight-boxes inside
+    document.querySelectorAll('#notes-container .topic-group').forEach(tg => {
+      const visibleCards = tg.querySelectorAll('.class-card:not(.ns-hidden)');
+      const visibleHB = tg.querySelectorAll('.highlight-box:not(.ns-hidden)');
+      tg.classList.toggle('ns-hidden', visibleCards.length === 0 && visibleHB.length === 0);
+    });
+
+    meta.innerHTML = '<b>' + totalMatches + '</b> match' + (totalMatches === 1 ? '' : 'es') + ' found';
+    const anyVisible = document.querySelectorAll('#notes-container .class-card:not(.ns-hidden)').length > 0 ||
+                       document.querySelectorAll('#notes-container .highlight-box:not(.ns-hidden)').length > 0;
+    noResults.classList.toggle('show', !anyVisible);
+  }
+
+  input.addEventListener('input', applyFilter);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { input.value = ''; applyFilter(); input.focus(); }
+  });
+  clearBtn.addEventListener('click', () => { input.value = ''; applyFilter(); input.focus(); });
+
+  // Keyboard shortcut: '/' focuses the search box (only when on Notes tab)
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement !== input && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      const notesActive = document.getElementById('notes-section').classList.contains('active');
+      if (notesActive) {
+        e.preventDefault();
+        input.focus();
+      }
+    }
+  });
+})();
 </script>
 </body>
 </html>
